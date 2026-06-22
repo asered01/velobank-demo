@@ -742,7 +742,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <h1>Więcej sprzedaży i leadów<br><em>z tego samego ruchu.</em></h1>
     <div class="p-chips" style="margin-top:16px">
       <span class="p-chip"><i class="ti ti-database" style="vertical-align:-2px"></i> Dane banku (1st-party)</span>
-      <span class="p-chip"><i class="ti ti-shield-lock" style="vertical-align:-2px"></i> Prywatny Claude</span>
+      <span class="p-chip"><i class="ti ti-shield-lock" style="vertical-align:-2px"></i> Synerise + Prywatny Claude</span>
       <span class="p-chip"><i class="ti ti-building-bank" style="vertical-align:-2px"></i> Wewnątrz środowiska banku</span>
     </div>
     <p class="p-lead">Ponad 90% osób na stronie banku jest niezalogowanych i wychodzi bez śladu. Agent AI rozpoznaje, którzy z nich realnie szukają kredytu, konta czy oszczędności — i domyka sprzedaż od razu online albo przekazuje doradcy gotowy lead. Bez nowego budżetu na reklamę, na danych banku, wewnątrz jego środowiska.</p>
@@ -767,7 +767,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
   <section class="p-sec"><div class="pw">
     <span class="p-eye">Jak to działa</span>
     <h2>Cała inteligencja dzieje się <em>wewnątrz granicy banku</em>.</h2>
-    <p class="p-lead">Rozpoznanie klienta i jego dane osobowe nie wychodzą poza bank. Do modelu AI trafiają wyłącznie sygnały bez danych osobowych — czego klient szuka, do jakiego segmentu pasuje, jak bardzo jest gotowy do decyzji. Wynik wraca jako sprzedaż w kanale cyfrowym albo gotowy lead dla doradcy. Żadna dana osobowa nie opuszcza banku.</p>
+    <p class="p-lead">To nie jest kolejny ogólny model AI ani chatbot. To konkretne, wdrożone rozwiązanie: silnik <b>Synerise</b> (dane, rozpoznanie klienta, rekomendacje) połączony z <b>Prywatnym Claude</b>, osadzone w środowisku banku. Rozpoznanie klienta i jego dane osobowe nie wychodzą poza bank. Do Prywatnego Claude trafiają wyłącznie sygnały bez danych osobowych — czego klient szuka, do jakiego segmentu pasuje, jak bardzo jest gotowy do decyzji. Wynik wraca jako sprzedaż w kanale cyfrowym albo gotowy lead dla doradcy. Żadna dana osobowa nie opuszcza banku.</p>
     <div class="p-flow">
       <div class="p-node ext"><div class="nk">Wejście</div><div class="nt">Niezalogowana wizyta</div><div class="nd">Wejście bez logowania i bez formularza — WWW lub aplikacja.</div></div>
       <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
@@ -893,8 +893,8 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <span class="p-eye">Dlaczego tylko Persooa</span>
     <h2>Trzy elementy, których nikt nie ma <em>złożonych w jedno</em>.</h2>
     <div class="p-cards">
-      <div class="p-card"><div class="ck">01 · Silnik</div><h3>Rozpoznanie klienta w czasie rzeczywistym</h3><p>Łączy niezalogowaną wizytę z profilem w bazie banku — w ułamku sekundy, zanim klient wyjdzie.</p></div>
-      <div class="p-card"><div class="ck">02 · Mózg</div><h3>Prywatny Claude — Azure lub Private Google</h3><p>Model AI działa w chmurze banku (Microsoft Azure albo Google Cloud). Rozumie potrzebę klienta, ale nie zapisuje danych i nie uczy się na nich.</p></div>
+      <div class="p-card"><div class="ck">01 · Silnik (Synerise)</div><h3>Rozpoznanie klienta w czasie rzeczywistym</h3><p>Silnik Synerise łączy niezalogowaną wizytę z profilem w bazie banku — w ułamku sekundy, zanim klient wyjdzie.</p></div>
+      <div class="p-card"><div class="ck">02 · Mózg</div><h3>Prywatny Claude — Azure lub Private Google</h3><p>Prywatny Claude działa w chmurze banku (Microsoft Azure albo Google Cloud). Rozumie potrzebę klienta, ale nie zapisuje danych i nie uczy się na nich.</p></div>
       <div class="p-card"><div class="ck">03 · Paliwo</div><h3>Własne dane banku</h3><p>Bank aktywuje dane, których nie ma żaden zewnętrzny dostawca. To one zamieniają ruch w dosprzedaż.</p></div>
     </div>
   </div></section>
@@ -914,7 +914,8 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <span class="p-eye g">Model komercyjny</span>
     <h2>Zero nowego budżetu.</h2>
     <p class="p-lead">Agent działa w chmurze, którą bank już ma — Microsoft Azure albo Google Cloud (Private Google) — i jest rozliczany przez jej Marketplace. Zużycie pomniejsza zobowiązanie zakupowe, które bank i tak ma wobec dostawcy chmury (np. MACC w Microsofcie albo commitment w Google). Efekt: bez nowej linii w budżecie, bez wpisywania nowego dostawcy, bez osobnego przetargu.</p>
-    <div class="p-chips"><span class="p-chip">Zużycie zamiast nowego budżetu (MACC / commitment Google)</span><span class="p-chip">Dostawca chmury jako sprzedawca</span><span class="p-chip">Jedna faktura — od Azure lub Google</span><span class="p-chip">Wdrożenie w tygodniach</span></div>
+    <p class="p-lead" style="margin-top:14px">Z perspektywy <b>TCO</b> to kluczowy punkt: zużycie chmury rozlicza się z <b>obecnego commitmentu chmurowego banku</b> — z budżetu, który bank już zakontraktował i tak musi wykorzystać. Rozwiązanie nie powiększa więc łącznego kosztu posiadania, tylko zagospodarowuje pieniądze już zarezerwowane.</p>
+    <div class="p-chips"><span class="p-chip">Niższy TCO — zużycie z obecnego commitmentu chmurowego</span><span class="p-chip">Zużycie zamiast nowego budżetu (MACC / commitment Google)</span><span class="p-chip">Dostawca chmury jako sprzedawca</span><span class="p-chip">Jedna faktura — od Azure lub Google</span><span class="p-chip">Wdrożenie w tygodniach</span></div>
   </div></section>
 
   <section class="p-sec"><div class="pw">
