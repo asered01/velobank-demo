@@ -1133,5 +1133,63 @@ function personalizeSurvey(k,s){
 buildSurvey('surveyChipsL','surveyResL',false);
 buildSurvey('surveyChips','surveyRes',true);
 </script>
+
+<!-- ===== Bramka dostępu (soft-gate, kod: 2026) ===== -->
+<style>
+  #velo-gate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;
+    background:rgba(15,23,42,.45);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    transition:opacity .45s ease;opacity:1}
+  #velo-gate.velo-hide{opacity:0;pointer-events:none}
+  #velo-gate .vg-card{width:min(380px,calc(100vw - 40px));background:#fff;border-radius:20px;
+    box-shadow:0 24px 70px rgba(2,6,23,.35);padding:32px 28px;text-align:center;
+    transform:translateY(0);transition:transform .2s ease}
+  #velo-gate.velo-shake .vg-card{animation:vgShake .4s}
+  @keyframes vgShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+  #velo-gate .vg-lock{font-size:30px;line-height:1;margin-bottom:14px}
+  #velo-gate h2{margin:0 0 6px;font-size:19px;font-weight:700;color:#0f172a}
+  #velo-gate p{margin:0 0 20px;font-size:13.5px;color:#64748b;line-height:1.5}
+  #velo-gate input{width:100%;box-sizing:border-box;padding:13px 14px;font-size:17px;text-align:center;
+    letter-spacing:3px;border:1.5px solid #e2e8f0;border-radius:12px;outline:none;transition:border-color .15s}
+  #velo-gate input:focus{border-color:#6d28d9}
+  #velo-gate input.vg-err{border-color:#ef4444}
+  #velo-gate .vg-msg{min-height:16px;margin:8px 0 14px;font-size:12.5px;color:#ef4444}
+  #velo-gate button{width:100%;padding:13px;font-size:15px;font-weight:600;color:#fff;border:0;cursor:pointer;
+    border-radius:12px;background:#6d28d9;transition:background .15s}
+  #velo-gate button:hover{background:#5b21b6}
+  #velo-gate .vg-foot{margin-top:16px;font-size:11px;color:#94a3b8}
+</style>
+<div id="velo-gate" role="dialog" aria-modal="true" aria-label="Dostęp do demo">
+  <div class="vg-card">
+    <div class="vg-lock">🔒</div>
+    <h2>Demo zabezpieczone</h2>
+    <p>Podaj kod dostępu, aby zobaczyć demo VeloBank.</p>
+    <input id="vg-input" type="text" inputmode="numeric" autocomplete="off"
+           placeholder="••••" maxlength="12" aria-label="Kod dostępu" />
+    <div class="vg-msg" id="vg-msg"></div>
+    <button id="vg-btn" type="button">Odblokuj</button>
+    <div class="vg-foot">Agentic LeadGen by Persooa</div>
+  </div>
+</div>
+<script>
+(function(){
+  var CODE='2026', KEY='velo-gate-ok';
+  var gate=document.getElementById('velo-gate'),
+      inp=document.getElementById('vg-input'),
+      btn=document.getElementById('vg-btn'),
+      msg=document.getElementById('vg-msg');
+  function unlock(){gate.classList.add('velo-hide');try{sessionStorage.setItem(KEY,'1')}catch(e){}
+    setTimeout(function(){gate.parentNode&&gate.parentNode.removeChild(gate)},500);}
+  function fail(){gate.classList.add('velo-shake');inp.classList.add('vg-err');
+    msg.textContent='Nieprawidłowy kod. Spróbuj ponownie.';
+    setTimeout(function(){gate.classList.remove('velo-shake')},450);inp.select();}
+  function tryit(){ if(inp.value.trim()===CODE){unlock();} else {fail();} }
+  try{ if(sessionStorage.getItem(KEY)==='1'){ gate.parentNode.removeChild(gate); return; } }catch(e){}
+  btn.addEventListener('click',tryit);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();tryit();} });
+  inp.addEventListener('input',function(){inp.classList.remove('vg-err');msg.textContent='';});
+  setTimeout(function(){inp.focus();},100);
+})();
+</script>
 </body>
 </html>
