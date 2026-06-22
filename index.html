@@ -742,7 +742,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <h1>Więcej sprzedaży i leadów<br><em>z tego samego ruchu.</em></h1>
     <div class="p-chips" style="margin-top:16px">
       <span class="p-chip"><i class="ti ti-database" style="vertical-align:-2px"></i> Dane banku (1st-party)</span>
-      <span class="p-chip"><i class="ti ti-shield-lock" style="vertical-align:-2px"></i> Synerise na Prywatnym Claude</span>
+      <span class="p-chip"><i class="ti ti-shield-lock" style="vertical-align:-2px"></i> Agent wzrostu na Prywatnym Claude</span>
       <span class="p-chip"><i class="ti ti-building-bank" style="vertical-align:-2px"></i> Wewnątrz środowiska banku</span>
     </div>
     <p class="p-lead">Ponad 90% osób na stronie banku jest niezalogowanych i wychodzi bez śladu. Agent AI rozpoznaje, którzy z nich realnie szukają kredytu, konta czy oszczędności — i domyka sprzedaż od razu online albo przekazuje doradcy gotowy lead. Bez nowego budżetu na reklamę, na danych banku, wewnątrz jego środowiska.</p>
@@ -767,13 +767,13 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
   <section class="p-sec"><div class="pw">
     <span class="p-eye">Jak to działa</span>
     <h2>Cała inteligencja dzieje się <em>wewnątrz granicy banku</em>.</h2>
-    <p class="p-lead">To nie jest kolejny ogólny model AI ani chatbot. To konkretne, wdrożone rozwiązanie: silnik <b>Synerise działający na Prywatnym Claude</b> (dane, rozpoznanie klienta, rekomendacje), osadzony w środowisku banku. Rozpoznanie klienta i jego dane osobowe nie wychodzą poza bank. Do Prywatnego Claude trafiają wyłącznie sygnały bez danych osobowych — czego klient szuka, do jakiego segmentu pasuje, jak bardzo jest gotowy do decyzji. Wynik wraca jako sprzedaż w kanale cyfrowym albo gotowy lead dla doradcy. Żadna dana osobowa nie opuszcza banku.</p>
+    <p class="p-lead">To nie jest kolejny ogólny model AI ani chatbot. Podpinamy się przez <b>MCP</b> do danych i analityki banku — tam, gdzie pracuje m.in. Synerise/CDP — i na tych danych stawiamy w banku <b>agenta wzrostu</b> działającego na Prywatnym Claude. Rozpoznanie klienta i jego dane osobowe nie wychodzą poza bank: do agenta trafiają wyłącznie sygnały bez danych osobowych — czego klient szuka, do jakiego segmentu pasuje, jak bardzo jest gotowy do decyzji. Wynik wraca jako sprzedaż w kanale cyfrowym albo gotowy lead dla doradcy.</p>
     <div class="p-flow">
       <div class="p-node ext"><div class="nk">Wejście</div><div class="nt">Niezalogowana wizyta</div><div class="nd">Wejście bez logowania i bez formularza — WWW lub aplikacja.</div></div>
       <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
       <div class="p-node"><div class="nk">Silnik danych</div><div class="nt">Rozpoznanie klienta</div><div class="nd">Łączy wizytę z profilem w bazie banku. Dane osobowe zostają tutaj.</div></div>
       <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
-      <div class="p-node"><div class="nk">Synerise na Prywatnym Claude · Azure lub Private Google</div><div class="nt">Rozpoznanie potrzeby</div><div class="nd">Widzi tylko sygnały bez danych osobowych. Nie zapisuje ich i nie uczy się na nich.</div></div>
+      <div class="p-node"><div class="nk">Agent wzrostu · Prywatny Claude</div><div class="nt">Rozpoznanie potrzeby</div><div class="nd">Widzi tylko sygnały bez danych osobowych — czego klient szuka i jak bardzo jest gotowy.</div></div>
       <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
       <div class="p-node lead"><div class="nk">Wynik</div><div class="nt">Zakup lub lead</div><div class="nd">Konwersja od razu w kanale cyfrowym albo gorący lead do doradcy — zanim klient zniknie.</div></div>
     </div>
@@ -792,7 +792,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
       <div class="p-card"><div class="ck">Omnichannel</div><h3>Handoff WWW → aplikacja</h3><p>Przenosi rozpoczęty wniosek na telefon (SMS / kod QR) z autouzupełnieniem.</p></div>
       <div class="p-card"><div class="ck">Rescue</div><h3>Exit-intent i powiadomienia</h3><p>Ratuje porzucone sesje: zapis oferty, push, in-app message, follow-up.</p></div>
       <div class="p-card"><div class="ck">Pomiar</div><h3>Grupa kontrolna i testy A/B</h3><p>Efekt liczymy na grupie kontrolnej — raportujemy tylko realny wzrost, nie deklaracje.</p></div>
-      <div class="p-card"><div class="ck">Integracja</div><h3>Podpięcie przez MCP do danych i analityki</h3><p>Agent łączy się przez MCP (Model Context Protocol) bezpośrednio ze środowiskiem danych i analityki banku — czyta dokładnie to, na co bank mu pozwoli, wewnątrz jego środowiska.</p></div>
+      <div class="p-card"><div class="ck">Integracja</div><h3>Podpięcie przez MCP do danych i analityki</h3><p>Łączymy się przez MCP (Model Context Protocol) bezpośrednio ze środowiskiem danych i analityki banku — czytamy dokładnie to, na co bank pozwoli. Na tych danych, w banku, stawiamy agenta wzrostu.</p></div>
     </div>
   </div></section>
 
@@ -821,7 +821,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
         </ul>
       </div>
     </div>
-    <div class="p-chips" style="margin-top:24px"><span class="p-chip">Działa z tym, co bank już ma:</span><span class="p-chip">Synerise na Prywatnym Claude</span><span class="p-chip">CDP</span><span class="p-chip">Azure lub Private Google</span><span class="p-chip">Podpięcie przez MCP (dane + analityka)</span><span class="p-chip">CRM</span><span class="p-chip">Marketing automation</span><span class="p-chip">Audiencje Google / Meta</span></div>
+    <div class="p-chips" style="margin-top:24px"><span class="p-chip">Działa z tym, co bank już ma:</span><span class="p-chip">Agent wzrostu na Prywatnym Claude</span><span class="p-chip">Synerise / CDP</span><span class="p-chip">Azure lub Private Google</span><span class="p-chip">Podpięcie przez MCP (dane + analityka)</span><span class="p-chip">CRM</span><span class="p-chip">Marketing automation</span><span class="p-chip">Audiencje Google / Meta</span></div>
 
     <div class="p-lead-card">
       <div class="lh"><i class="ti ti-flame"></i>Co dostaje doradca — przykładowy lead<span class="badge">ANONIMIZOWANY</span></div>
@@ -893,7 +893,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <span class="p-eye">Dlaczego tylko Persooa</span>
     <h2>Trzy elementy, których nikt nie ma <em>złożonych w jedno</em>.</h2>
     <div class="p-cards">
-      <div class="p-card"><div class="ck">01 · Rozwiązanie</div><h3>Synerise na Prywatnym Claude</h3><p>Synerise działa na Prywatnym Claude w chmurze banku (Azure lub Private Google): rozpoznaje niezalogowaną wizytę, dopasowuje ją do bazy i wybiera następny krok — w czasie rzeczywistym, bez zapisywania danych i bez uczenia na nich.</p></div>
+      <div class="p-card"><div class="ck">01 · Rozwiązanie</div><h3>Agent wzrostu na Prywatnym Claude</h3><p>Po MCP łączymy się z danymi i analityką banku, a na nich stawiamy agenta wzrostu na Prywatnym Claude (Azure lub Private Google): rozpoznaje niezalogowaną wizytę, dopasowuje ją do bazy i wybiera następny krok — w czasie rzeczywistym, wewnątrz banku.</p></div>
       <div class="p-card"><div class="ck">02 · Paliwo</div><h3>Własne dane banku</h3><p>Bank aktywuje dane, których nie ma żaden zewnętrzny dostawca. To one zamieniają ruch w dosprzedaż.</p></div>
       <div class="p-card"><div class="ck">03 · Dowód</div><h3>Wzrost na grupie kontrolnej, bez nowego budżetu</h3><p>Efekt mierzony i rozliczany na grupie kontrolnej, a zużycie chmury pokrywane z commitmentu, który bank już ma — niższy TCO.</p></div>
     </div>
@@ -902,7 +902,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
   <section class="p-sec"><div class="pw">
     <span class="p-eye">Bezpieczeństwo i model</span>
     <h2>Dane osobowe nie opuszczają środowiska banku.</h2>
-    <div class="p-chips"><span class="p-chip">Bank nie udostępnia żadnych danych osobowych</span><span class="p-chip">Model nie zapisuje danych (Zero Data Retention)</span><span class="p-chip">Brak uczenia modelu na danych banku</span><span class="p-chip">Synerise na Prywatnym Claude — Azure lub Private Google</span><span class="p-chip">Wzrost leadów rozliczany na grupie kontrolnej</span></div>
+    <div class="p-chips"><span class="p-chip">Bank nie udostępnia żadnych danych osobowych</span><span class="p-chip">Model nie zapisuje danych (Zero Data Retention)</span><span class="p-chip">Pełna kontrola i audyt po stronie banku</span><span class="p-chip">Agent wzrostu na Prywatnym Claude — Azure lub Private Google</span><span class="p-chip">Wzrost leadów rozliczany na grupie kontrolnej</span></div>
     <div class="p-bars">
       <div class="p-bar c"><div class="col"></div><div class="bl">Grupa<br>kontrolna</div></div>
       <div class="p-bar t"><div class="col"></div><div class="bl">Grupa<br>z agentem</div></div>
@@ -913,7 +913,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
   <section class="p-sec"><div class="pw">
     <span class="p-eye g">Model komercyjny</span>
     <h2>Zero nowego budżetu.</h2>
-    <p class="p-lead">Agent działa w chmurze, którą bank już ma — Microsoft Azure albo Google Cloud (Private Google) — i jest rozliczany przez jej Marketplace. Zużycie pomniejsza zobowiązanie zakupowe, które bank i tak ma wobec dostawcy chmury (np. MACC w Microsofcie albo commitment w Google). Efekt: bez nowej linii w budżecie, bez wpisywania nowego dostawcy, bez osobnego przetargu.</p>
+    <p class="p-lead">Agent działa w chmurze, którą bank już ma — Microsoft Azure albo Private Google — i jest rozliczany przez jej Marketplace. Zużycie pomniejsza zobowiązanie zakupowe, które bank i tak ma wobec dostawcy chmury (np. MACC w Microsofcie albo commitment w Google). Efekt: bez nowej linii w budżecie, bez wpisywania nowego dostawcy, bez osobnego przetargu.</p>
     <p class="p-lead" style="margin-top:14px">Z perspektywy <b>TCO</b> to kluczowy punkt: zużycie chmury rozlicza się z <b>obecnego commitmentu chmurowego banku</b> — z budżetu, który bank już zakontraktował i tak musi wykorzystać. Rozwiązanie nie powiększa więc łącznego kosztu posiadania, tylko zagospodarowuje pieniądze już zarezerwowane.</p>
     <div class="p-chips"><span class="p-chip">Niższy TCO — zużycie z obecnego commitmentu chmurowego</span><span class="p-chip">Zużycie zamiast nowego budżetu (MACC / commitment Google)</span><span class="p-chip">Dostawca chmury jako sprzedawca</span><span class="p-chip">Jedna faktura — od Azure lub Google</span><span class="p-chip">Wdrożenie w tygodniach</span></div>
   </div></section>
@@ -934,7 +934,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <p class="p-lead" style="margin:18px auto 0;text-align:center">Bezpłatna diagnoza pokaże dokładnie, ile anonimowego ruchu da się odzyskać — i ile to warte.</p>
     <div style="margin-top:26px"><button class="p-cta" id="vbConsultBtn">Umów bezpłatną konsultację</button><button class="p-cta gh" data-goto="web">Wróć do demo</button></div>
   </div></section>
-  <div class="p-foot"><div class="pw" style="display:flex;justify-content:space-between;width:100%"><span>Persooa · Generowanie leadów z ruchu, który dziś przepada</span><span>Dane banku · Synerise na Prywatnym Claude · Rozpoznanie klienta</span></div></div>
+  <div class="p-foot"><div class="pw" style="display:flex;justify-content:space-between;width:100%"><span>Persooa · Generowanie leadów z ruchu, który dziś przepada</span><span>Dane banku · Agent wzrostu na Prywatnym Claude · MCP</span></div></div>
 </div><!-- /view-how -->
 
 <script>
