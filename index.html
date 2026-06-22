@@ -930,7 +930,7 @@ html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;
     <span class="p-eye g">Pierwszy krok</span>
     <h2>Zacznijmy od <em>trzech tygodni</em>.</h2>
     <p class="p-lead" style="margin:18px auto 0;text-align:center">Bezpłatna diagnoza pokaże dokładnie, ile anonimowego ruchu da się odzyskać — i ile to warte.</p>
-    <div style="margin-top:26px"><button class="p-cta">Umów bezpłatną konsultację</button><button class="p-cta gh" data-goto="web">Wróć do demo</button></div>
+    <div style="margin-top:26px"><button class="p-cta" id="vbConsultBtn">Umów bezpłatną konsultację</button><button class="p-cta gh" data-goto="web">Wróć do demo</button></div>
   </div></section>
   <div class="p-foot"><div class="pw" style="display:flex;justify-content:space-between;width:100%"><span>Persooa · Agentic Lead Generation for Banking</span><span>Dane 1st-party · Private Claude · Identity resolution</span></div></div>
 </div><!-- /view-how -->
@@ -1132,6 +1132,57 @@ function personalizeSurvey(k,s){
   $('prodsR').innerHTML=[s.prod,'konto','oszcz','karta'].map((kk,idx)=>card(kk,idx===0,'Twój cel')).join('');}
 buildSurvey('surveyChipsL','surveyResL',false);
 buildSurvey('surveyChips','surveyRes',true);
+</script>
+
+<!-- ===== Popup: Umów bezpłatną konsultację ===== -->
+<style>
+  #vb-consult{position:fixed;inset:0;z-index:99998;display:none;align-items:center;justify-content:center;
+    background:rgba(15,23,42,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    opacity:0;transition:opacity .25s ease}
+  #vb-consult.vb-show{display:flex;opacity:1}
+  #vb-consult .vb-card{position:relative;width:min(400px,calc(100vw - 40px));background:#fff;border-radius:22px;
+    box-shadow:0 24px 70px rgba(2,6,23,.4);padding:34px 30px;text-align:center;
+    transform:translateY(10px);transition:transform .25s ease}
+  #vb-consult.vb-show .vb-card{transform:translateY(0)}
+  #vb-consult .vb-x{position:absolute;top:14px;right:16px;border:0;background:none;font-size:22px;line-height:1;
+    color:#94a3b8;cursor:pointer;padding:4px}
+  #vb-consult .vb-x:hover{color:#475569}
+  #vb-consult .vb-ic{width:58px;height:58px;margin:0 auto 16px;border-radius:50%;display:flex;align-items:center;
+    justify-content:center;font-size:26px;background:#ede9fe}
+  #vb-consult h2{margin:0 0 6px;font-size:20px;font-weight:800;color:#0f172a}
+  #vb-consult p{margin:0 0 22px;font-size:13.5px;color:#64748b;line-height:1.55}
+  #vb-consult a.vb-tel{display:block;font-size:30px;font-weight:800;letter-spacing:1px;color:#6d28d9;
+    text-decoration:none;margin-bottom:22px}
+  #vb-consult a.vb-tel:hover{text-decoration:underline}
+  #vb-consult a.vb-call{display:block;padding:14px;font-size:15px;font-weight:700;color:#fff;
+    text-decoration:none;border-radius:12px;background:#6d28d9;transition:background .15s}
+  #vb-consult a.vb-call:hover{background:#5b21b6}
+  #vb-consult .vb-foot{margin-top:16px;font-size:11px;color:#94a3b8}
+</style>
+<div id="vb-consult" role="dialog" aria-modal="true" aria-label="Umów bezpłatną konsultację">
+  <div class="vb-card">
+    <button class="vb-x" id="vb-consult-x" aria-label="Zamknij">×</button>
+    <div class="vb-ic">📞</div>
+    <h2>Umów bezpłatną konsultację</h2>
+    <p>Zadzwoń, a wspólnie zaplanujemy bezpłatną diagnozę — pokażemy, ile anonimowego ruchu da się odzyskać.</p>
+    <a class="vb-tel" href="tel:+48501006000">501 006 000</a>
+    <a class="vb-call" href="tel:+48501006000">Zadzwoń teraz</a>
+    <div class="vb-foot">Agentic LeadGen by Persooa</div>
+  </div>
+</div>
+<script>
+(function(){
+  var modal=document.getElementById('vb-consult'),
+      open=document.getElementById('vbConsultBtn'),
+      x=document.getElementById('vb-consult-x');
+  function show(){modal.classList.add('vb-show');}
+  function hide(){modal.classList.remove('vb-show');}
+  if(open) open.addEventListener('click',function(e){e.preventDefault();show();});
+  if(x) x.addEventListener('click',hide);
+  modal.addEventListener('click',function(e){ if(e.target===modal) hide(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide(); });
+})();
 </script>
 
 <!-- ===== Bramka dostępu (soft-gate, kod: 2026) ===== -->
