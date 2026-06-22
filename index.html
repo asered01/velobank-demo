@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VeloBank — Persooa demo: aktywacja danych 1st-party</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700;900&family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Kanit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.5.0/dist/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --velo:#00B140;--velo-d:#00962C;--velo-link:#009134;--velo-100:#DEF0D7;--velo-50:#EEF8E9;
+  --ink:#0A0A0A;--ink2:#303030;--muted:#5B5B5B;--muted2:#8A8A8A;--line:#DCDCDC;--line2:#E8E8E8;
+  --smoke:#F6F6F6;--white:#FEFEFE;--amber:#FFAE00;--red:#EC5840;
+}
+html,body{background:#E9ECEA;font-family:'Red Hat Display',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1400px;margin:0 auto;padding:14px 18px 40px}
+
+.demo-bar{position:sticky;top:0;z-index:60;background:#0A0A0A;border-radius:10px;padding:12px 16px;color:#fff;box-shadow:0 8px 30px rgba(0,0,0,.2);margin-bottom:16px}
+.demo-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-p{display:flex;align-items:center;gap:9px;font-weight:900;font-size:15px}
+.brand-p .mk{width:26px;height:26px;border-radius:6px;background:var(--velo);display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
+.demo-sub{font-size:12px;color:#9DB0A4;font-weight:500}
+.bar-right{margin-left:auto;display:flex;align-items:center;gap:18px}
+.legend{display:flex;gap:14px;font-size:11.5px;color:#BFD0C6;font-weight:500}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.see-cta{display:inline-flex;align-items:center;gap:8px;background:var(--velo);color:#fff;font-weight:700;font-size:13px;padding:10px 17px;border-radius:4px;text-decoration:none;transition:.15s;white-space:nowrap}
+.see-cta:hover{background:var(--velo-d);transform:translateY(-1px)}
+.see-cta i{font-size:17px}
+.sm-input{flex:1;border:1px solid var(--line);border-radius:4px;padding:11px;font-family:inherit;font-size:13px;color:var(--ink);min-width:0}
+.sm-input:focus{outline:none;border-color:var(--velo)}
+.dotL{width:9px;height:9px;border-radius:50%;background:#7A8D81}.dotR{width:9px;height:9px;border-radius:50%;background:var(--velo)}
+.uc-row{display:flex;flex-wrap:wrap;gap:8px;padding:12px 2px 2px}
+.uc{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:4px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#CFE0D5;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:.15s}
+.uc:hover{background:rgba(255,255,255,.14)}
+.uc .nm{width:19px;height:19px;border-radius:50%;background:rgba(255,255,255,.16);font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.uc.on{background:var(--velo);color:#fff;border-color:var(--velo)}
+.uc.on .nm{background:#fff;color:var(--velo-d)}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.cols>div{min-width:0}
+.col-tag{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;padding:9px 14px;border-radius:8px 8px 0 0;margin-bottom:-6px}
+.tagL{background:#E1E5E3;color:#5C6B62}.tagR{background:var(--velo);color:#fff}
+.col-tag .pill{margin-left:auto;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.3px}
+.tagL .pill{background:#D2D8D5;color:#69756E}.tagR .pill{background:rgba(255,255,255,.2);color:#fff}
+
+.frame{background:var(--white);border-radius:8px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.12);border:1px solid var(--line)}
+.chrome{display:flex;align-items:center;gap:8px;padding:9px 14px;background:#ECEFED;border-bottom:1px solid var(--line)}
+.chrome .d{width:10px;height:10px;border-radius:50%;background:#C7D3CB}
+.chrome .url{flex:1;margin-left:6px;font-size:11.5px;color:#74837A;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:500;display:flex;align-items:center;gap:6px}
+.page{height:800px;overflow-y:auto;scroll-behavior:smooth;background:var(--white)}
+.page::-webkit-scrollbar{width:9px}.page::-webkit-scrollbar-thumb{background:#D2DDD6;border-radius:8px}
+
+/* ====== VeloBank faithful chrome ====== */
+.vb-top{border-bottom:1px solid var(--line2);background:#fff}
+.vb-top-in{display:flex;align-items:center;justify-content:space-between;padding:7px 18px;font-size:12px;flex-wrap:wrap;gap:6px}
+.vb-seg{display:flex;gap:2px}
+.vb-seg span{padding:4px 12px;color:var(--muted);font-weight:500;cursor:pointer;border-radius:3px}
+.vb-seg span.on{color:var(--ink);font-weight:700;box-shadow:inset 0 -2px 0 var(--velo)}
+.vb-util{display:flex;gap:16px;color:var(--muted);font-weight:500}
+.vb-util span{cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.vb-util span:hover{color:var(--velo-link)}.vb-util i{color:var(--velo);font-size:15px}
+
+.vb-nav{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line2);position:sticky;top:0;background:rgba(255,255,255,.98);backdrop-filter:blur(6px);z-index:5;flex-wrap:wrap}
+.vb-logo img{height:46px;display:block}
+.vb-menu{display:flex;gap:13px;list-style:none;flex-wrap:wrap;min-width:0}
+.vb-menu li{font-size:13.5px;font-weight:700;color:var(--ink);cursor:pointer;padding:6px 0;position:relative;white-space:nowrap}
+.vb-menu li:hover{color:var(--velo-link)}
+.vb-menu li.has::after{content:'\ea5f';font-family:'tabler-icons';font-size:13px;margin-left:4px;color:var(--muted2);font-weight:400}
+.vb-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+.vb-ico{width:38px;height:38px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--ink);cursor:pointer;border-radius:4px}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:700;border-radius:0;transition:.18s;line-height:1}
+.btn-pri{background:var(--velo);color:#fff;font-size:14px;padding:13px 22px}
+.btn-pri:hover{background:var(--velo-d)}
+.btn-out{background:#fff;border:2px solid var(--velo);color:var(--velo-d);font-size:14px;padding:11px 20px}
+.btn-out:hover{background:var(--velo);color:#fff}
+.btn-lg{font-size:15px;padding:15px 30px}
+.btn-block{width:100%;text-align:center}
+
+/* reco bar (native-style info strip) */
+.reco{display:flex;align-items:center;gap:12px;padding:11px 22px;background:var(--velo-100);border-bottom:2px solid var(--velo)}
+.reco .rdot{width:30px;height:30px;background:var(--velo);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;flex-shrink:0;border-radius:4px}
+.reco .rt{font-size:12.5px;line-height:1.4;color:var(--velo-d)}
+.reco .rt b{color:#063D14;font-weight:700}
+.reco .live{margin-left:auto;font-size:10px;font-weight:700;color:var(--velo-d);display:flex;align-items:center;gap:5px;letter-spacing:.4px;flex-shrink:0}
+.reco .live .bl{width:8px;height:8px;border-radius:50%;background:var(--velo);box-shadow:0 0 0 0 rgba(0,177,64,.5);animation:bl 1.6s infinite}
+@keyframes bl{0%{box-shadow:0 0 0 0 rgba(0,177,64,.5)}70%{box-shadow:0 0 0 7px rgba(0,177,64,0)}100%{box-shadow:0 0 0 0 rgba(0,177,64,0)}}
+
+/* hero — full-bleed photo + left white scrim + dark text (VeloBank style) */
+.vb-hero{position:relative;min-height:392px;background-size:cover;background-position:right center;display:flex;align-items:center}
+.vb-hero::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.9) 34%,rgba(255,255,255,.45) 56%,rgba(255,255,255,0) 74%)}
+.vb-hero-text{position:relative;z-index:2;padding:30px 22px;max-width:64%}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--velo-d);margin-bottom:14px}
+.htitle{font-size:32px;line-height:1.12;font-weight:900;letter-spacing:-.6px;margin-bottom:13px;color:var(--ink)}
+.hsub{font-size:15px;line-height:1.5;color:var(--ink2);margin-bottom:20px;font-weight:500;max-width:380px}
+.hcta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hnote{font-size:12px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:5px}
+.hnote i{color:var(--velo)}
+
+.trust{display:flex;gap:20px;padding:13px 22px;border-bottom:1px solid var(--line2);flex-wrap:wrap;background:var(--smoke)}
+.trust .it{display:flex;flex-direction:column;gap:0}
+.trust .it .v{font-size:16px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:5px}
+.trust .it .l{font-size:10.5px;color:var(--muted);font-weight:500}
+.trust .it .v .st{color:var(--amber);font-size:13px}
+
+.sec{padding:22px}
+.sec-h{font-size:20px;font-weight:900;letter-spacing:-.3px;margin-bottom:3px}
+.sec-s{font-size:13px;color:var(--muted);margin-bottom:16px;font-weight:500}
+.prods{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.prod{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;transition:.15s;position:relative;display:flex;flex-direction:column}
+.prod:hover{box-shadow:0 8px 22px rgba(0,0,0,.08)}
+.prod .img{height:94px;background-size:cover;background-position:center}
+.prod .pb{padding:13px 15px;flex:1;display:flex;flex-direction:column}
+.prod h4{font-size:15px;font-weight:900;margin-bottom:4px}
+.prod p{font-size:12px;color:var(--muted);line-height:1.45;margin-bottom:10px;flex:1}
+.prod .pr{font-size:12.5px;font-weight:700;color:var(--ink2);display:flex;align-items:center;gap:5px;margin-bottom:10px}
+.prod .pr b{color:var(--velo-d);font-size:15px}
+.prod .lnk{font-size:13px;font-weight:700;color:var(--velo-link);display:flex;align-items:center;gap:5px}
+.prod.flag{border:2px solid var(--velo);box-shadow:0 10px 26px rgba(0,177,64,.16)}
+.prod .badge{position:absolute;top:10px;left:10px;background:var(--velo);color:#fff;font-size:10px;font-weight:700;padding:5px 11px;border-radius:3px;display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+
+.smart{margin:0 22px;margin-top:18px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.smart-h{display:flex;align-items:center;gap:9px;padding:12px 16px;background:var(--velo-100);font-size:13px;font-weight:900;color:var(--velo-d);border-bottom:1px solid var(--line2)}
+.smart-h .tag{margin-left:auto;font-size:9px;font-weight:700;color:#fff;background:var(--velo);padding:3px 9px;border-radius:3px;letter-spacing:.5px}
+.smart-b{padding:16px}
+.promo-gen{margin:18px 22px 0;border:1px dashed var(--line);border-radius:8px;padding:16px;background:var(--smoke);display:flex;align-items:center;gap:13px}
+.promo-gen .pic{width:38px;height:38px;border-radius:4px;background:#E6E9E7;display:flex;align-items:center;justify-content:center;font-size:19px;color:var(--muted2)}
+.promo-gen .pt{font-size:13px;font-weight:700;color:#76837B}
+.promo-gen .ps{font-size:11.5px;color:#9AA79F;margin-top:2px}
+
+.kv{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:8px 0;border-bottom:1px solid var(--line2)}
+.kv:last-child{border-bottom:none}
+.kv .k{color:var(--muted);font-weight:500}.kv .v{font-weight:700;color:var(--ink)}
+.prog{height:8px;background:var(--velo-100);border-radius:0;overflow:hidden;margin:9px 0 6px}
+.prog>i{display:block;height:100%;background:var(--velo)}
+.bigrate{font-size:32px;font-weight:900;letter-spacing:-1px;color:var(--velo-d)}
+.field{background:var(--velo-50);border:1px solid var(--velo-100);border-radius:4px;padding:10px 12px;font-size:13px;font-weight:600;color:var(--ink2);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.field i{color:var(--velo-d)}.field .chk{margin-left:auto;color:var(--velo);font-size:17px}
+.cardviz{border-radius:8px;padding:15px;color:#fff;background:linear-gradient(120deg,#00962C,#00B140);position:relative;overflow:hidden;min-height:98px}
+.cardviz .cn{font-size:13px;letter-spacing:2px;margin-top:16px;font-weight:600}
+.cardviz .lab{font-size:10px;opacity:.85;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.cardviz .lim{font-size:19px;font-weight:900}
+.cardviz .chip{position:absolute;top:15px;right:15px;width:32px;height:23px;border-radius:4px;background:rgba(255,255,255,.3)}
+.maprow{display:flex;align-items:center;gap:12px}
+.mapbox{width:78px;height:64px;border-radius:6px;background:var(--velo-50);position:relative;flex-shrink:0;overflow:hidden;border:1px solid var(--velo-100)}
+.mapbox .pin{position:absolute;top:16px;left:30px;color:var(--velo-d);font-size:23px}
+.mapbox .ln{position:absolute;background:#fff;opacity:.85}
+.kpi-strip{display:flex;align-items:center;gap:14px;margin:18px 22px 0;padding:15px 18px;background:var(--velo-100);border-radius:8px}
+.kpi-strip .kv2{font-size:28px;font-weight:900;color:var(--velo-d);letter-spacing:-.5px}
+.kpi-strip .kl2{font-size:12.5px;color:#063D14;font-weight:600;line-height:1.35}
+.kpi-strip .ico{margin-left:auto;font-size:24px;color:var(--velo)}
+
+.appsec{margin:22px;border-radius:8px;padding:22px;background:var(--ink);color:#fff;display:flex;gap:18px;align-items:center;overflow:hidden}
+.appsec h4{font-size:18px;font-weight:900;margin-bottom:6px}
+.appsec p{font-size:12.5px;color:#C2CEC7;line-height:1.45;margin-bottom:14px}
+.stores{display:flex;gap:8px}
+.store{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:8px 13px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px}
+.phone{width:86px;height:150px;border-radius:14px;background:var(--velo);flex-shrink:0;border:3px solid rgba(255,255,255,.2);position:relative;overflow:hidden}
+.phone .scr{position:absolute;inset:7px;border-radius:8px;background:rgba(255,255,255,.16);padding:9px}
+.phone .bar{height:7px;border-radius:3px;background:rgba(255,255,255,.45);margin-bottom:6px}
+.phone .bar.s{width:55%}.phone .bar.m{width:82%}
+.phone .bal{font-size:9px;color:rgba(255,255,255,.85);margin-top:8px;font-weight:600}
+.phone .amt{font-size:15px;font-weight:900;color:#fff}
+
+.vb-foot{background:var(--ink);color:#9E9E9E;padding:24px 22px 18px}
+.vb-foot-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding-bottom:18px;border-bottom:1px solid #2A2A2A}
+.vb-foot-cols h5{color:#fff;font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px}
+.vb-foot-cols a{display:block;color:#9E9E9E;font-size:12px;margin-bottom:6px;text-decoration:none;cursor:pointer}
+.vb-foot-cols a:hover{color:#fff}
+.vb-foot-bot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:14px;font-size:11px}
+.vb-foot-bot .bfg{display:flex;align-items:center;gap:8px;color:#CACACA;font-weight:700}
+.vb-foot-bot .soc{display:flex;gap:10px;font-size:17px;color:#CACACA}
+@media(max-width:560px){.cols{grid-template-columns:1fr}}
+
+/* ===== master view switcher ===== */
+.master{position:sticky;top:0;z-index:70;background:#0A0A0A;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.master-in{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:11px 20px;flex-wrap:wrap}
+.master .brand-p{display:flex;align-items:center;gap:9px;font-weight:900;font-size:16px}
+.master .brand-p .mk{width:27px;height:27px;border-radius:6px;background:var(--velo);display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
+.vtabs{display:flex;gap:6px;background:rgba(255,255,255,.07);padding:4px;border-radius:8px}
+.vtab{display:flex;align-items:center;gap:7px;background:transparent;border:none;color:#CFE0D5;font-family:inherit;font-weight:700;font-size:13px;padding:8px 15px;border-radius:6px;cursor:pointer;transition:.15s}
+.vtab:hover{color:#fff}
+.vtab i{font-size:16px}
+.vtab.on{background:var(--velo);color:#fff}
+.master-sub{margin-left:auto;font-size:12px;color:#9DB0A4;font-weight:500}
+.view{padding:0}
+.webbar{background:#0A0A0A;border-radius:10px;padding:12px 16px;margin-bottom:16px;color:#fff}
+.webbar-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.subnote{font-size:12px;color:var(--velo);font-weight:700;display:none;align-items:center;gap:6px}
+.subnote.on{display:inline-flex}
+.ctx-bar{display:flex;align-items:center;gap:12px;margin-top:11px;padding:10px 13px;border-radius:8px;font-size:12.5px;line-height:1.4;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.ctx-bar .cb{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:11px;letter-spacing:.4px;padding:6px 11px;border-radius:5px;white-space:nowrap;flex-shrink:0}
+.ctx-bar.anon .cb{background:#4A4A4A;color:#fff}
+.ctx-bar.known .cb{background:var(--velo);color:#fff}
+.ctx-bar .cx{color:#B7C6BD;font-weight:500}
+.ctx-bar .cx b{color:#fff;font-weight:700}
+.tagx{display:inline-block;background:var(--velo-100);color:var(--velo-d);font-size:10px;font-weight:800;padding:2px 7px;border-radius:3px;margin:0 3px 3px 0;letter-spacing:.2px}
+.tagx.gray{background:#ECECEC;color:#666}
+.blist{display:flex;flex-direction:column;gap:2px}
+.bp{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px dashed var(--line2);font-size:12.5px;color:var(--ink2);line-height:1.4}
+.bp:last-child{border-bottom:none}
+.bp i{color:var(--velo-d);font-size:17px;flex-shrink:0;margin-top:1px}
+.bp b{font-weight:800;color:var(--ink)}
+.vb-menu li.act{color:var(--velo-link)}
+.vb-menu li.act::before{content:'';position:absolute;left:0;right:14px;bottom:-1px;height:2px;background:var(--velo)}
+
+/* ===== mobile app view ===== */
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:880px;margin:0 auto}
+.phone-col{display:flex;flex-direction:column;align-items:center}
+.phone-col .col-tag{width:100%;max-width:340px;border-radius:8px;margin-bottom:12px}
+.device{width:340px;max-width:100%;background:#0A0A0A;border-radius:42px;padding:11px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.screen{background:var(--smoke);border-radius:32px;overflow:hidden;height:710px;overflow-y:auto;position:relative}
+.screen::-webkit-scrollbar{width:0}
+.statusbar{display:flex;align-items:center;justify-content:space-between;padding:12px 22px 6px;font-size:13px;font-weight:700;color:var(--ink);background:var(--velo)}
+.statusbar .sb-ic{display:flex;gap:6px;font-size:14px}
+.app-top{display:flex;align-items:center;gap:10px;padding:13px 18px 15px;background:var(--velo);color:#fff}
+.app-top .av{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px}
+.app-top .hi{font-size:12px;opacity:.85;font-weight:500}.app-top .nm{font-size:16px;font-weight:900;line-height:1.1}
+.app-top .bell{margin-left:auto;font-size:21px;position:relative}
+.app-top .bell .dot{position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#fff;border:2px solid var(--velo)}
+.appreco{display:flex;align-items:center;gap:8px;padding:9px 16px;background:var(--velo-d);color:#fff;font-size:11px;font-weight:600;line-height:1.3}
+.appreco i{font-size:15px;flex-shrink:0}.appreco .lv{margin-left:auto;font-weight:800;letter-spacing:.4px;font-size:9px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.appreco .lv .bl{width:7px;height:7px;border-radius:50%;background:#fff;animation:bl 1.6s infinite}
+.bal-card{margin:14px 16px 0;background:#fff;border-radius:16px;padding:16px;box-shadow:0 8px 22px rgba(0,71,26,.10);border:1px solid var(--line2)}
+.bal-card .bl1{font-size:12px;color:var(--muted);font-weight:600}
+.bal-card .bl2{font-size:26px;font-weight:900;letter-spacing:-.5px;margin:2px 0}
+.bal-card .bl3{font-size:11px;color:var(--muted2);font-weight:600;letter-spacing:1px}
+.qa-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:16px}
+.qa-row .qa{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--ink2)}
+.qa-row .qa .qc{width:46px;height:46px;border-radius:14px;background:var(--velo-50);color:var(--velo-d);display:flex;align-items:center;justify-content:center;font-size:21px}
+.push{margin:0 12px 10px;background:#fff;border-radius:14px;padding:12px 13px;box-shadow:0 10px 26px rgba(0,0,0,.16);display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line2);animation:pushIn .5s ease}
+@keyframes pushIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.push .pic{width:34px;height:34px;border-radius:9px;background:var(--velo);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.push . pt{font-weight:800}
+.push .ptt{font-size:12.5px;font-weight:800;line-height:1.2}.push .pms{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.push .pnow{margin-left:auto;font-size:10px;color:var(--muted2);flex-shrink:0}
+.inapp{margin:4px 16px 0;border:1.5px solid var(--velo-100);border-radius:16px;overflow:hidden;background:#fff}
+.inapp-h{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--velo-50);font-size:12px;font-weight:900;color:var(--velo-d)}
+.inapp-h .tag{margin-left:auto;font-size:8.5px;font-weight:800;color:#fff;background:var(--velo);padding:3px 8px;border-radius:3px;letter-spacing:.4px}
+.inapp-b{padding:14px}
+.app-sec-h{padding:16px 16px 8px;font-size:14px;font-weight:900}
+.app-tiles{padding:0 16px}
+.atile{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line2);border-radius:13px;padding:11px 12px;margin-bottom:9px;position:relative}
+.atile .ai{width:42px;height:42px;border-radius:11px;background-size:cover;background-position:center;flex-shrink:0}
+.atile .an{font-size:13.5px;font-weight:800}.atile .ad{font-size:11px;color:var(--muted);margin-top:1px}
+.atile .ag{margin-left:auto;color:var(--velo-d);font-size:18px}
+.atile.flag{border:1.5px solid var(--velo);box-shadow:0 8px 18px rgba(0,177,64,.14)}
+.atile .abadge{position:absolute;top:-7px;left:12px;background:var(--velo);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:3px}
+.app-bottom{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid var(--line2);padding:8px 6px 10px;margin-top:14px}
+.app-bottom .bt{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9.5px;font-weight:600;color:var(--muted2)}
+.app-bottom .bt.on{color:var(--velo-d)}
+.app-bottom .bt i{font-size:21px}
+.app-bottom .bt.blik{position:relative}
+.app-bottom .bt.blik .bc{width:46px;height:46px;border-radius:50%;background:var(--velo);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;margin-top:-20px;box-shadow:0 8px 16px rgba(0,71,26,.25)}
+.app-kpi{display:flex;align-items:center;justify-content:center;gap:14px;max-width:880px;margin:18px auto 0;padding:15px 20px;background:var(--velo-100);border-radius:10px}
+.app-kpi .v{font-size:28px;font-weight:900;color:var(--velo-d)}.app-kpi .l{font-size:13px;color:#063D14;font-weight:600}
+@media(max-width:760px){.phones{grid-template-columns:1fr}}
+
+/* ===== Persooa "how" view ===== */
+.pview{background:#0A0F1C;color:#E7ECF5;font-family:'Red Hat Display',sans-serif;border-radius:14px;overflow:hidden;position:relative}
+.pview::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(800px 420px at 82% -6%,rgba(106,151,255,.14),transparent 60%),radial-gradient(620px 420px at 6% 8%,rgba(0,177,64,.10),transparent 55%)}
+.pw{max-width:1080px;margin:0 auto;padding:0 30px;position:relative;z-index:1}
+.p-eye{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#6A97FF;font-weight:700;display:inline-flex;align-items:center;gap:.6em}
+.p-eye::before{content:"";width:24px;height:1px;background:#6A97FF;opacity:.6}
+.p-eye.g{color:#5FD6A0}.p-eye.g::before{background:#5FD6A0}
+.pview h1,.pview h2,.pview h3{font-family:'Newsreader',serif;font-weight:400;line-height:1.08;letter-spacing:-.01em}
+.pview em{font-style:italic;color:#5FD6A0}
+.p-hero{padding:72px 0 56px}
+.p-hero .brand{display:flex;align-items:center;gap:9px;font-weight:900;font-size:16px;margin-bottom:30px}
+.p-hero .brand .mk{width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#00D957,#00B140);display:flex;align-items:center;justify-content:center;color:#06320f;font-size:15px}
+.p-hero h1{font-size:clamp(2.4rem,5vw,3.9rem);margin:20px 0 0;max-width:17ch}
+.p-lead{color:#9FB0CC;font-size:1.1rem;line-height:1.6;max-width:62ch;margin-top:22px}
+.p-cta{display:inline-flex;align-items:center;gap:.5em;background:#6A97FF;color:#06101f;font-weight:700;font-size:.95rem;padding:.8em 1.4em;border-radius:4px;border:none;cursor:pointer;text-decoration:none;margin-top:32px}
+.p-cta.gh{background:transparent;color:#E7ECF5;border:1px solid rgba(231,236,245,.2);margin-left:12px}
+.p-stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:52px}
+.p-stat{flex:1 1 200px;border:1px solid rgba(231,236,245,.1);border-radius:4px;padding:18px 20px}
+.p-stat .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5E6B86;font-weight:700}
+.p-stat .v{font-family:'Newsreader',serif;font-size:1.5rem;margin-top:8px}.p-stat .v span{color:#6A97FF}
+.p-sec{padding:60px 0;border-top:1px solid rgba(231,236,245,.07)}
+.p-sec h2{font-size:clamp(1.8rem,3.6vw,2.7rem);max-width:22ch;margin-top:18px}
+.p-flow{display:flex;align-items:stretch;gap:0;margin-top:42px;flex-wrap:nowrap}
+.p-node{flex:1;background:#121A2C;border:1px solid rgba(231,236,245,.16);border-radius:6px;padding:18px 16px}
+.p-node.ext{background:transparent;border-style:dashed}
+.p-node.lead{border-color:rgba(95,214,160,.4);background:linear-gradient(180deg,rgba(95,214,160,.1),#121A2C)}
+.p-node .nk{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6A97FF;font-weight:700}
+.p-node.lead .nk{color:#5FD6A0}.p-node.ext .nk{color:#5E6B86}
+.p-node .nt{font-family:'Newsreader',serif;font-size:1.15rem;margin:6px 0 5px}
+.p-node .nd{font-size:.82rem;color:#9FB0CC;line-height:1.45}
+.p-conn{flex:0 0 40px;display:flex;align-items:center;justify-content:center;color:#6A97FF;font-size:20px}
+.p-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:42px}
+.p-card{background:#121A2C;border:1px solid rgba(231,236,245,.1);border-radius:6px;padding:22px 20px;transition:.2s}
+.p-card:hover{border-color:#6A97FF;transform:translateY(-2px)}
+.p-card .ck{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#5FD6A0;font-weight:700;margin-bottom:10px}
+.p-card h3{font-size:1.2rem;margin-bottom:8px}.p-card p{color:#9FB0CC;font-size:.9rem;line-height:1.5}
+.p-bars{display:flex;align-items:flex-end;gap:22px;height:130px;margin-top:36px}
+.p-bar{width:84px;display:flex;flex-direction:column;align-items:center;gap:10px;justify-content:flex-end;height:100%}
+.p-bar .col{width:100%;border-radius:3px 3px 0 0}
+.p-bar.c .col{height:42%;background:#1B2740;border:1px solid rgba(231,236,245,.16)}
+.p-bar.t .col{height:100%;background:linear-gradient(180deg,#6A97FF,rgba(106,151,255,.35))}
+.p-bar .bl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#5E6B86;text-align:center}
+.p-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.p-chip{font-size:12px;color:#E7ECF5;border:1px solid rgba(231,236,245,.18);border-radius:100px;padding:.5em 1em}
+.p-cta-band{text-align:center;padding:72px 0}
+.p-cta-band h2{margin:14px auto 0;max-width:18ch}
+.pview .p-foot{border-top:1px solid rgba(231,236,245,.08);padding:24px 0;font-size:12px;color:#5E6B86;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:760px){.p-flow{flex-direction:column;gap:10px}.p-conn{flex-basis:auto;transform:rotate(90deg);padding:6px 0}.p-cards{grid-template-columns:1fr}}
+.p-sub{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+.p-sub b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#6A97FF;font-weight:700;margin-bottom:8px;border-top:1px solid rgba(231,236,245,.12);padding-top:16px}
+.p-sub p{color:#9FB0CC;font-size:.92rem;line-height:1.5}
+.p-demo{background:linear-gradient(180deg,rgba(0,177,64,.05),transparent)}
+.p-demo-card{margin-top:32px;display:grid;grid-template-columns:1.05fr .95fr;border:1px solid rgba(95,214,160,.28);border-radius:12px;overflow:hidden;background:#0E1525}
+.p-demo-prev{padding:24px;display:flex;gap:12px;background:linear-gradient(135deg,#10182b,#0c1322)}
+.pmini{flex:1;border-radius:8px;overflow:hidden;border:1px solid rgba(231,236,245,.12);background:#0a0f1c}
+.pmini .ph{height:8px}.pmini.l .ph{background:#3a4252}.pmini.r .ph{background:var(--velo)}
+.pmini .pbd{padding:12px}
+.pmini .pl{font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:10px}
+.pmini.l .pl{color:#5E6B86}.pmini.r .pl{color:#5FD6A0}
+.pmini .bar{height:7px;border-radius:3px;background:#222c42;margin-bottom:7px}
+.pmini .bar.w{width:82%}.pmini .bar.m{width:55%}
+.pmini.r .bar.hot{background:linear-gradient(90deg,var(--velo),rgba(0,177,64,.35));height:24px;border-radius:5px}
+.p-demo-cta{padding:30px;display:flex;flex-direction:column;justify-content:center;gap:13px}
+.p-demo-cta h3{font-family:'Newsreader',serif;font-size:1.55rem;line-height:1.15}
+.p-cta.big{font-size:1rem;padding:1em 1.5em;justify-content:center}
+.p-cta i{font-size:18px}
+.p-demo-cta .meta{font-size:12px;color:#5E6B86;letter-spacing:.03em;margin-top:2px}
+.master{border-bottom:1px solid rgba(255,255,255,.08)}
+@media(max-width:760px){.p-sub{grid-template-columns:1fr}.p-demo-card{grid-template-columns:1fr}}
+.p-io{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:36px}
+.p-io .col{background:#121A2C;border:1px solid rgba(231,236,245,.1);border-radius:8px;padding:20px 22px 10px}
+.p-io h4{font-family:'Newsreader',serif;font-size:1.18rem;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.p-io h4 i{color:#6A97FF}.p-io.out h4 i{color:#5FD6A0}
+.p-io ul{list-style:none}
+.p-io li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:#9FB0CC;padding:10px 0;border-top:1px solid rgba(231,236,245,.07);line-height:1.4}
+.p-io li:first-child{border-top:none}
+.p-io li i{color:#5E6B86;font-size:16px;margin-top:1px;flex-shrink:0}
+.p-io li b{color:#E7ECF5;font-weight:500}
+.p-lead-card{margin-top:30px;background:#121A2C;border:1px solid rgba(95,214,160,.3);border-radius:10px;overflow:hidden;max-width:660px}
+.p-lead-card .lh{display:flex;align-items:center;gap:9px;padding:13px 18px;background:linear-gradient(90deg,rgba(95,214,160,.12),transparent);font-weight:700;font-size:.85rem;letter-spacing:.03em;color:#5FD6A0}
+.p-lead-card .lh .badge{margin-left:auto;font-size:10px;background:#5FD6A0;color:#06320f;padding:3px 9px;border-radius:3px;font-weight:800;letter-spacing:.04em}
+.p-lr{display:flex;justify-content:space-between;gap:14px;padding:11px 18px;border-top:1px solid rgba(231,236,245,.07);font-size:.88rem}
+.p-lr .k{color:#5E6B86;flex-shrink:0}.p-lr .v{color:#E7ECF5;font-weight:500;text-align:right}
+.p-lr .v.hot{color:#5FD6A0}
+.p-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+.p-step{border-top:1px solid rgba(231,236,245,.16);padding-top:18px}
+.p-step .sn{font-size:.85rem;color:#6A97FF;font-weight:700;letter-spacing:.1em}
+.p-step h3{font-size:1.2rem;margin:10px 0 8px}.p-step p{color:#9FB0CC;font-size:.9rem;line-height:1.5}
+@media(max-width:760px){.p-io,.p-steps{grid-template-columns:1fr}}
+/* ===== showcase WWW: kalkulator + ankieta ===== */
+.showcase{margin-top:22px;background:var(--velo-50);border:1px solid var(--velo-100);border-radius:14px;padding:28px 26px}
+.sc-head{max-width:780px;margin-bottom:22px}
+.sc-eye{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--velo-d)}
+.sc-head h2{font-size:24px;font-weight:900;letter-spacing:-.4px;margin:8px 0}
+.sc-head p{font-size:14px;color:var(--ink2);line-height:1.55}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sc-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column}
+.sc-card-h{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:900;margin-bottom:14px}
+.sc-card-h i{font-size:20px;color:var(--velo-d)}
+.sc-card-h .sc-tag{margin-left:auto;font-size:10px;font-weight:800;color:var(--velo-d);background:var(--velo-50);border:1px solid var(--velo-100);padding:3px 9px;border-radius:3px;letter-spacing:.3px}
+.sc-row{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin:14px 0 7px}
+.sc-row label{color:var(--muted)}.sc-row span{color:var(--ink)}
+.sc-range{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:var(--velo-100);outline:none}
+.sc-range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--velo);cursor:pointer;border:3px solid #fff;box-shadow:0 2px 6px rgba(0,71,26,.3)}
+.sc-range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--velo);cursor:pointer;border:3px solid #fff}
+.sc-res{display:flex;gap:12px;margin-top:18px}
+.sc-res>div{flex:1;background:var(--velo-50);border-radius:8px;padding:12px 14px}
+.sc-res .rl{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:2px}
+.sc-res .rv{font-size:22px;font-weight:900;color:var(--velo-d)}
+.sc-res .rv2{font-size:22px;font-weight:900;color:var(--ink)}
+.sc-note{display:flex;gap:8px;align-items:flex-start;margin-top:14px;font-size:12px;color:var(--velo-d);line-height:1.45;font-weight:600}
+.sc-note i{flex-shrink:0;margin-top:1px;font-size:15px}
+.sc-q{font-size:13.5px;font-weight:700;color:var(--ink2);margin-bottom:12px}
+.sc-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sc-chip{font-family:inherit;font-size:13px;font-weight:700;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink2);cursor:pointer;transition:.15s}
+.sc-chip:hover{border-color:var(--velo)}
+.sc-chip.on{background:var(--velo);color:#fff;border-color:var(--velo)}
+.sc-survey-res{margin-top:16px}
+.sc-offer{display:flex;align-items:center;gap:12px;background:var(--velo-50);border:1px solid var(--velo-100);border-radius:10px;padding:13px 14px;margin-bottom:10px}
+.sc-offer .oi{width:42px;height:42px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--velo-d);flex-shrink:0}
+.sc-offer .ot{font-size:14px;font-weight:900}.sc-offer .od{font-size:12px;color:var(--muted);margin-top:2px}
+.imod{background:var(--smoke);border-top:1px solid var(--line2);border-bottom:1px solid var(--line2)}
+.imod.on{background:var(--velo-50);border-color:var(--velo-100)}
+@media(max-width:600px){.sc-grid{grid-template-columns:1fr}}
+@media(max-width:760px){.sc-grid{grid-template-columns:1fr}}
+
+/* ===== branding nowej strony Persooa (jasny) — widok „Jak to robimy" ===== */
+#view-how{background:linear-gradient(135deg,#ffffff,#f4f6fd);color:#586883;font-family:'Inter',system-ui,sans-serif;border:1px solid #e6eaf2}
+#view-how::before{background:radial-gradient(900px 480px at 85% -5%,rgba(1,91,254,.07),transparent 60%),radial-gradient(720px 520px at 0% 105%,rgba(65,219,195,.12),transparent 55%),linear-gradient(0deg,rgba(78,63,246,.05),transparent 42%)}
+#view-how h1,#view-how h2,#view-how h3,#view-how h4{font-family:'Kanit',sans-serif;color:#0f1e34;font-weight:700;letter-spacing:-.01em;line-height:1.08}
+#view-how em{font-style:normal;background:linear-gradient(90deg,#41dbc3 0%,#015bfe 52%,#4e3ff6 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+#view-how .p-lead{color:#586883}
+#view-how .p-eye{color:#015bfe;font-weight:700}
+#view-how .p-eye::before{background:#015bfe;opacity:.5}
+#view-how .p-eye.g{color:#0a6d5f}
+#view-how .p-eye.g::before{background:#41dbc3;opacity:.9}
+#view-how .p-hero .brand{margin-bottom:28px}
+#view-how .p-cta{background:#015bfe;color:#fff;border-radius:999px;font-family:'Kanit',sans-serif;font-weight:600;box-shadow:0 12px 26px -12px rgba(1,91,254,.55)}
+#view-how .p-cta:hover{background:#0a4ed0}
+#view-how .p-cta.gh{background:#fff;color:#0f1e34;border:1px solid #e6eaf2;box-shadow:none}
+#view-how .p-cta.gh:hover{border-color:#015bfe;color:#015bfe}
+#view-how .p-stat{background:#fff;border:1px solid #e6eaf2;border-radius:14px}
+#view-how .p-stat .k{color:#9aa5b5}
+#view-how .p-stat .v{color:#0f1e34}#view-how .p-stat .v span{color:#015bfe}
+#view-how .p-sec{border-top:1px solid #e6eaf2}
+#view-how .p-sub p{color:#586883}
+#view-how .p-sub b{color:#015bfe;border-top:1px solid #e6eaf2}
+#view-how .p-node{background:#fff;border:1px solid #e6eaf2;border-radius:14px}
+#view-how .p-node.ext{background:#f8faff;border-style:dashed}
+#view-how .p-node.lead{background:linear-gradient(180deg,rgba(65,219,195,.12),#fff);border-color:rgba(65,219,195,.5)}
+#view-how .p-node .nk{color:#015bfe}#view-how .p-node.lead .nk{color:#0a6d5f}#view-how .p-node.ext .nk{color:#9aa5b5}
+#view-how .p-node .nt{color:#0f1e34}#view-how .p-node .nd{color:#586883}
+#view-how .p-conn{color:#015bfe}
+#view-how .p-card{background:#fff;border:1px solid #e6eaf2;border-radius:18px;box-shadow:0 12px 30px -22px rgba(15,30,52,.25)}
+#view-how .p-card:hover{border-color:#015bfe;box-shadow:0 16px 34px -20px rgba(1,91,254,.32)}
+#view-how .p-card .ck{color:#015bfe}#view-how .p-card h3{color:#0f1e34}#view-how .p-card p{color:#586883}
+#view-how .p-bar.c .col{background:#e6eaf2;border:1px solid #dbe2ee}
+#view-how .p-bar.t .col{background:linear-gradient(180deg,#015bfe,#41dbc3)}
+#view-how .p-bar .bl{color:#9aa5b5}
+#view-how .p-chip{background:#f4f6fd;border:1px solid #e6eaf2;color:#44546f}
+#view-how .p-demo{background:linear-gradient(180deg,rgba(65,219,195,.06),transparent)}
+#view-how .p-demo-card{background:#fff;border:1px solid #e6eaf2;border-radius:18px;box-shadow:0 18px 40px -26px rgba(15,30,52,.28)}
+#view-how .p-demo-prev{background:linear-gradient(135deg,#f4f6fd,#eef3ff)}
+#view-how .pmini{background:#fff;border:1px solid #e6eaf2}
+#view-how .pmini.l .ph{background:#c7d0e0}#view-how .pmini.r .ph{background:#015bfe}
+#view-how .pmini.l .pl{color:#9aa5b5}#view-how .pmini.r .pl{color:#0a6d5f}
+#view-how .pmini .bar{background:#e6eaf2}
+#view-how .pmini.r .bar.hot{background:linear-gradient(90deg,#015bfe,#41dbc3)}
+#view-how .p-demo-cta h3{color:#0f1e34}#view-how .p-demo-cta .meta{color:#9aa5b5}
+#view-how .p-io .col{background:#fff;border:1px solid #e6eaf2;border-radius:14px}
+#view-how .p-io h4{color:#0f1e34}#view-how .p-io h4 i{color:#015bfe}#view-how .p-io.out h4 i{color:#0a6d5f}
+#view-how .p-io li{border-top:1px solid #eef1f7;color:#586883}
+#view-how .p-io li i{color:#9aa5b5}#view-how .p-io li b{color:#0f1e34}
+#view-how .p-lead-card{background:#fff;border:1px solid rgba(65,219,195,.5);border-radius:14px;box-shadow:0 14px 34px -24px rgba(15,30,52,.28)}
+#view-how .p-lead-card .lh{background:linear-gradient(90deg,rgba(65,219,195,.14),transparent);color:#0a6d5f}
+#view-how .p-lead-card .lh .badge{background:#41dbc3;color:#073b33}
+#view-how .p-lr{border-top:1px solid #eef1f7}
+#view-how .p-lr .k{color:#9aa5b5}#view-how .p-lr .v{color:#0f1e34}#view-how .p-lr .v.hot{color:#0a6d5f}
+#view-how .p-step{border-top:1px solid #d8deea}
+#view-how .p-step .sn{color:#015bfe}#view-how .p-step h3{color:#0f1e34}#view-how .p-step p{color:#586883}
+#view-how .p-foot{border-top:1px solid #e6eaf2;color:#9aa5b5}
+#view-how .p-matrix{width:100%;border-collapse:collapse;margin-top:34px;font-size:13.5px;background:#fff;border:1px solid #e6eaf2;border-radius:14px;overflow:hidden}
+#view-how .p-matrix th{text-align:left;font-family:'Kanit',sans-serif;font-weight:600;color:#0f1e34;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;padding:13px 16px;background:#f4f6fd;border-bottom:1px solid #e6eaf2}
+#view-how .p-matrix td{padding:13px 16px;border-bottom:1px solid #eef1f7;color:#586883;vertical-align:top;line-height:1.45}
+#view-how .p-matrix tr:last-child td{border-bottom:none}
+#view-how .p-matrix tr:hover td{background:#f8faff}
+#view-how .p-matrix .sc-name{font-weight:600;color:#0f1e34}
+#view-how .p-matrix .rec{color:#0f1e34;font-weight:500}
+#view-how .p-matrix .ch{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;letter-spacing:.3px}
+#view-how .p-matrix .ch.www{background:#eaf2ff;color:#0d4ed8}
+#view-how .p-matrix .ch.app{background:#eafbf7;color:#0a6d5f}
+@media(max-width:760px){#view-how .p-matrix,#view-how .p-matrix tbody,#view-how .p-matrix tr,#view-how .p-matrix td{display:block}#view-how .p-matrix thead{display:none}#view-how .p-matrix td{border:none;padding:3px 16px}#view-how .p-matrix tr{border-bottom:1px solid #e6eaf2;padding:12px 0}#view-how .p-matrix .sc-name{font-size:15px;margin-bottom:4px}}
+</style>
+</head>
+<body>
+
+<div class="master">
+  <div class="master-in">
+    <div class="brand-p"><span class="mk"><i class="ti ti-bolt"></i></span>Agentic LeadGen <span style="font-weight:500;color:#9DB0A4;margin-left:5px">by Persooa</span></div>
+    <div class="vtabs">
+      <button class="vtab on" data-v="web"><i class="ti ti-world"></i>Strona WWW</button>
+      <button class="vtab" data-v="app"><i class="ti ti-device-mobile"></i>Aplikacja mobilna</button>
+      <button class="vtab" data-v="how"><i class="ti ti-bolt"></i>Jak to robimy</button>
+    </div>
+    <span class="master-sub">Demo aktywacji danych 1st-party · VeloBank</span>
+  </div>
+</div>
+
+<div id="view-web" class="view">
+<div class="wrap">
+
+  <div class="webbar">
+    <div class="webbar-top">
+      <div class="legend"><span><i class="dotL"></i>Bez aktywacji danych</span><span><i class="dotR"></i>Z aktywacją Persooa</span></div>
+      <span class="subnote" id="subNote"><i class="ti ti-layout-navbar"></i></span>
+      <span class="master-sub" style="margin-left:auto">Wybierz scenariusz lub kliknij zakładkę w menu banku ↓</span>
+    </div>
+    <div class="ctx-bar anon">
+      <span class="cb"><i class="ti ti-eye-off"></i>RUCH ANONIMOWY</span>
+      <span class="cx"><b>90%+ odwiedzających to goście bez logowania.</b> Persooa rozpoznaje intencję „w ciemno" i — gdy wykryje sam fakt logowania — domniemuje, że to klient. Lekko i szybko (lead-gen), bez sięgania do CRM. Pełne dane klienta są dopiero w aplikacji.</span>
+    </div>
+    <div class="uc-row" id="ucRow"></div>
+  </div>
+
+  <div class="cols">
+
+    <!-- LEFT -->
+    <div>
+      <div class="col-tag tagL"><i class="ti ti-eye-off"></i>velobank.pl — bez aktywacji danych<span class="pill">GOŚĆ ANONIMOWY</span></div>
+      <div class="frame">
+        <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url"><i class="ti ti-lock"></i>velobank.pl</span></div>
+        <div class="page">
+          <div class="vb-top"><div class="vb-top-in">
+            <div class="vb-seg"><span class="on">Klienci indywidualni</span><span>Bankowość prywatna</span><span>Małe firmy</span></div>
+            <div class="vb-util"><span><i class="ti ti-map-pin"></i>Placówki</span><span><i class="ti ti-headset"></i>Pomoc</span><span><i class="ti ti-phone"></i>Kontakt</span><span>EN</span></div>
+          </div></div>
+          <nav class="vb-nav">
+            <a class="vb-logo"><img src="https://www.velobank.pl/themes/velobank/images/logo-velobank-green.svg" alt="VeloBank"></a>
+            <ul class="vb-menu"><li class="has">Konta</li><li class="has">Karty</li><li class="has">Oszczędności</li><li class="has">Kredyty</li><li class="has">Ubezpieczenia</li></ul>
+            <div class="vb-actions"><button class="vb-ico" aria-label="Szukaj"><i class="ti ti-search"></i></button><button class="btn btn-pri">Zaloguj się</button></div>
+          </nav>
+
+          <section class="vb-hero" id="heroL">
+            <div class="vb-hero-text">
+              <div class="eyebrow" id="hLey">VeloKonto</div>
+              <h1 class="htitle" id="hLtitle">Najlepsze rzeczy<br>w życiu są za 0 zł</h1>
+              <p class="hsub" id="hLsub">0 zł za prowadzenie VeloKonta i kartę — bez żadnych warunków.</p>
+              <div class="hcta-row"><button class="btn btn-pri btn-lg" id="hLcta">Załóż VeloKonto</button><span class="hnote" id="hLnote"><i class="ti ti-clock"></i>Online w 8 minut</span></div>
+            </div>
+          </section>
+
+          <div class="trust">
+            <div class="it"><span class="v">3 mln+</span><span class="l">klientów</span></div>
+            <div class="it"><span class="v">4,8<span class="st"><i class="ti ti-star-filled"></i></span></span><span class="l">ocena aplikacji</span></div>
+            <div class="it"><span class="v">0 zł</span><span class="l">za konto i kartę</span></div>
+            <div class="it"><span class="v">BFG</span><span class="l">gwarancja depozytów</span></div>
+          </div>
+
+          <section class="sec imod">
+            <h3 class="sec-h">Kalkulator pożyczki i ankieta</h3>
+            <p class="sec-s">Te same moduły — ale bez aktywacji danych pozostają tylko narzędziami. Żaden sygnał nie wraca do strony.</p>
+            <div class="sc-grid">
+              <div class="sc-card">
+                <div class="sc-card-h"><i class="ti ti-calculator"></i>Kalkulator pożyczki</div>
+                <div class="sc-row"><label>Kwota pożyczki</label><span id="calcAmtVL">50 000 zł</span></div>
+                <input type="range" id="calcAmtL" class="sc-range" min="3000" max="120000" step="1000" value="50000">
+                <div class="sc-row"><label>Okres spłaty</label><span id="calcPerVL">60 mies.</span></div>
+                <input type="range" id="calcPerL" class="sc-range" min="6" max="120" step="6" value="60">
+                <div class="sc-res"><div><span class="rl">Rata miesięczna</span><span class="rv" id="calcRataL">— zł</span></div><div><span class="rl">RRSO</span><span class="rv2">8,4%</span></div></div>
+                <div class="sc-note" style="color:var(--muted)"><i class="ti ti-info-circle"></i><span>Wynik widzi tylko klient. Reszta strony się nie zmienia.</span></div>
+                <button class="btn btn-pri btn-block" style="margin-top:14px">Złóż wniosek</button>
+              </div>
+              <div class="sc-card">
+                <div class="sc-card-h"><i class="ti ti-clipboard-list"></i>Mini-ankieta</div>
+                <p class="sc-q">Na co potrzebujesz środków?</p>
+                <div class="sc-chips" id="surveyChipsL"></div>
+                <div class="sc-survey-res" id="surveyResL"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="sec">
+            <h3 class="sec-h">Sprawdź naszą ofertę</h3>
+            <p class="sec-s">Wszystkie produkty pokazane tak samo każdemu użytkownikowi.</p>
+            <div class="prods" id="prodsL"></div>
+          </section>
+
+          <div class="promo-gen" style="margin:0 22px">
+            <div class="pic"><i class="ti ti-template"></i></div>
+            <div><div class="pt">Ten sam baner dla każdego</div><div class="ps">Brak rozpoznania użytkownika → brak dopasowania treści i oferty.</div></div>
+          </div>
+
+          <div class="appsec">
+            <div style="flex:1"><h4>Aplikacja VeloBank</h4><p>Bankuj wygodnie wszędzie, gdzie jesteś. BLIK, przelewy, oszczędności.</p>
+              <div class="stores"><span class="store"><i class="ti ti-brand-apple"></i>App Store</span><span class="store"><i class="ti ti-brand-google-play"></i>Google Play</span></div></div>
+            <div class="phone"><div class="scr"><div class="bar s"></div><div class="bar m"></div><div class="bal">Saldo</div><div class="amt">— — —</div></div></div>
+          </div>
+
+          <footer class="vb-foot">
+            <div class="vb-foot-cols">
+              <div><h5>O VeloBanku</h5><a>O nas</a><a>Kariera</a><a>Aktualności</a></div>
+              <div><h5>Produkty</h5><a>Konta</a><a>Pożyczki</a><a>Oszczędności</a></div>
+              <div><h5>Pomoc</h5><a>Centrum pomocy</a><a>Placówki</a><a>Bezpieczeństwo</a></div>
+              <div><h5>Kontakt</h5><a>22 444 00 00</a><a>Napisz do nas</a><a>Reklamacje</a></div>
+            </div>
+            <div class="vb-foot-bot"><span class="bfg"><i class="ti ti-shield-check" style="color:var(--velo)"></i>Depozyty gwarantowane przez BFG</span><span>© 2026 VeloBank S.A.</span><span class="soc"><i class="ti ti-brand-facebook"></i><i class="ti ti-brand-instagram"></i><i class="ti ti-brand-youtube"></i></span></div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+      <div class="col-tag tagR"><i class="ti ti-bolt"></i>velobank.pl — z aktywacją danych (Persooa)<span class="pill">PERSONALIZACJA: ON</span></div>
+      <div class="frame">
+        <div class="chrome"><span class="d"></span><span class="d"></span><span class="d"></span><span class="url"><i class="ti ti-lock"></i>velobank.pl</span></div>
+        <div class="page">
+          <div class="vb-top"><div class="vb-top-in">
+            <div class="vb-seg"><span class="on">Klienci indywidualni</span><span>Bankowość prywatna</span><span>Małe firmy</span></div>
+            <div class="vb-util"><span><i class="ti ti-map-pin"></i>Placówki</span><span><i class="ti ti-headset"></i>Pomoc</span><span><i class="ti ti-phone"></i>Kontakt</span><span>EN</span></div>
+          </div></div>
+          <nav class="vb-nav">
+            <a class="vb-logo"><img src="https://www.velobank.pl/themes/velobank/images/logo-velobank-green.svg" alt="VeloBank"></a>
+            <ul class="vb-menu"><li class="has">Konta</li><li class="has">Karty</li><li class="has">Oszczędności</li><li class="has">Kredyty</li><li class="has">Ubezpieczenia</li></ul>
+            <div class="vb-actions"><button class="vb-ico" aria-label="Szukaj"><i class="ti ti-search"></i></button><button class="btn btn-pri" id="navCta">Dokończ wniosek</button></div>
+          </nav>
+
+          <div class="reco"><div class="rdot"><i class="ti ti-radar-2"></i></div><div class="rt" id="recoText"></div><div class="live"><span class="bl"></span>NA ŻYWO</div></div>
+
+          <section class="vb-hero" id="heroR">
+            <div class="vb-hero-text">
+              <div class="eyebrow" id="hEyebrow"></div>
+              <h1 class="htitle" id="hTitle"></h1>
+              <p class="hsub" id="hSub"></p>
+              <div class="hcta-row"><button class="btn btn-pri btn-lg" id="hCta"></button><span class="hnote" id="hNote"></span></div>
+            </div>
+          </section>
+
+          <div class="trust">
+            <div class="it"><span class="v">3 mln+</span><span class="l">klientów</span></div>
+            <div class="it"><span class="v">4,8<span class="st"><i class="ti ti-star-filled"></i></span></span><span class="l">ocena aplikacji</span></div>
+            <div class="it"><span class="v">0 zł</span><span class="l">za konto i kartę</span></div>
+            <div class="it"><span class="v">BFG</span><span class="l">gwarancja depozytów</span></div>
+          </div>
+
+          <section class="sec imod on">
+            <h3 class="sec-h">Policz ratę i dopasuj ofertę</h3>
+            <p class="sec-s">Rusz suwakami albo wybierz cel — Persooa od razu przebuduje komunikat, ofertę i rekomendacje. <b style="color:var(--velo-d)">Na żywo.</b></p>
+            <div class="sc-grid">
+              <div class="sc-card">
+                <div class="sc-card-h"><i class="ti ti-calculator"></i>Kalkulator pożyczki<span class="sc-tag">SUWAKI · NA ŻYWO</span></div>
+                <div class="sc-row"><label>Kwota pożyczki</label><span id="calcAmtV">50 000 zł</span></div>
+                <input type="range" id="calcAmt" class="sc-range" min="3000" max="120000" step="1000" value="50000">
+                <div class="sc-row"><label>Okres spłaty</label><span id="calcPerV">60 mies.</span></div>
+                <input type="range" id="calcPer" class="sc-range" min="6" max="120" step="6" value="60">
+                <div class="sc-res"><div><span class="rl">Rata miesięczna</span><span class="rv" id="calcRata">— zł</span></div><div><span class="rl">RRSO</span><span class="rv2">8,4%</span></div></div>
+                <div class="sc-note"><i class="ti ti-sparkles"></i><span id="calcNote"></span></div>
+                <div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn-pri" style="flex:1">Weź tę kwotę</button><button class="btn btn-out" id="calcReturn">Symuluj powrót →</button></div>
+              </div>
+              <div class="sc-card">
+                <div class="sc-card-h"><i class="ti ti-clipboard-list"></i>Dopasujemy ofertę w 10 s<span class="sc-tag">MINI-ANKIETA</span></div>
+                <p class="sc-q">Na co potrzebujesz środków?</p>
+                <div class="sc-chips" id="surveyChips"></div>
+                <div class="sc-survey-res" id="surveyRes"></div>
+              </div>
+            </div>
+          </section>
+
+          <div class="smart">
+            <div class="smart-h"><i class="ti ti-sparkles"></i><span id="smartTitle"></span><span class="tag">PERSOOA</span></div>
+            <div class="smart-b" id="smartBody"></div>
+          </div>
+
+          <div class="kpi-strip"><span class="kv2" id="kpiV"></span><span class="kl2" id="kpiL"></span><i class="ti ti-trending-up ico"></i></div>
+
+          <section class="sec">
+            <h3 class="sec-h">Dopasowane do Ciebie</h3>
+            <p class="sec-s" id="prodSub"></p>
+            <div class="prods" id="prodsR"></div>
+          </section>
+
+          <div class="appsec">
+            <div style="flex:1"><h4>Aplikacja VeloBank</h4><p id="appCopy"></p>
+              <div class="stores"><span class="store"><i class="ti ti-brand-apple"></i>App Store</span><span class="store"><i class="ti ti-brand-google-play"></i>Google Play</span></div></div>
+            <div class="phone"><div class="scr"><div class="bar s"></div><div class="bar m"></div><div class="bal">Saldo</div><div class="amt">12 480 zł</div></div></div>
+          </div>
+
+          <footer class="vb-foot">
+            <div class="vb-foot-cols">
+              <div><h5>O VeloBanku</h5><a>O nas</a><a>Kariera</a><a>Aktualności</a></div>
+              <div><h5>Produkty</h5><a>Konta</a><a>Pożyczki</a><a>Oszczędności</a></div>
+              <div><h5>Pomoc</h5><a>Centrum pomocy</a><a>Placówki</a><a>Bezpieczeństwo</a></div>
+              <div><h5>Kontakt</h5><a>22 444 00 00</a><a>Napisz do nas</a><a>Reklamacje</a></div>
+            </div>
+            <div class="vb-foot-bot"><span class="bfg"><i class="ti ti-shield-check" style="color:var(--velo)"></i>Depozyty gwarantowane przez BFG</span><span>© 2026 VeloBank S.A.</span><span class="soc"><i class="ti ti-brand-facebook"></i><i class="ti ti-brand-instagram"></i><i class="ti ti-brand-youtube"></i></span></div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+</div><!-- /view-web -->
+
+<div id="view-app" class="view" hidden>
+<div class="wrap">
+  <div class="webbar">
+    <div class="webbar-top">
+      <div class="legend"><span><i class="dotL"></i>Aplikacja bez aktywacji</span><span><i class="dotR"></i>Aplikacja z Persooa</span></div>
+      <span class="master-sub" style="margin-left:auto">Aplikacja mobilna VeloBank · 10 in-app personalizacji ↓</span>
+    </div>
+    <div class="ctx-bar known">
+      <span class="cb"><i class="ti ti-user-check"></i>KLIENCI ZALOGOWANI · KONTEKST CRM</span>
+      <span class="cx"><b>W aplikacji klient jest już rozpoznany.</b> Persooa personalizuje in-app na bazie realnych danych: saldo, posiadane produkty, transakcje i historia — pełen profil 360, nie domysł.</span>
+    </div>
+    <div class="uc-row" id="appRow"></div>
+  </div>
+
+  <div class="phones">
+    <div class="phone-col">
+      <div class="col-tag tagL"><i class="ti ti-eye-off"></i>Aplikacja — bez aktywacji<span class="pill">DLA WSZYSTKICH</span></div>
+      <div class="device"><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="sb-ic"><i class="ti ti-signal-4g"></i><i class="ti ti-wifi"></i><i class="ti ti-battery-3"></i></span></div>
+        <div class="app-top"><div class="av">AS</div><div><div class="hi">Dzień dobry</div><div class="nm">Arkadiusz</div></div><div class="bell"><i class="ti ti-bell"></i></div></div>
+        <div class="bal-card"><div class="bl1">Konto osobiste</div><div class="bl2">12 480,50 zł</div><div class="bl3">•••• 8842</div></div>
+        <div class="qa-row">
+          <div class="qa"><div class="qc"><i class="ti ti-qrcode"></i></div>BLIK</div>
+          <div class="qa"><div class="qc"><i class="ti ti-arrow-up-right"></i></div>Przelew</div>
+          <div class="qa"><div class="qc"><i class="ti ti-scan"></i></div>Kod QR</div>
+          <div class="qa"><div class="qc"><i class="ti ti-plus"></i></div>Doładuj</div>
+        </div>
+        <div class="app-sec-h">Nasze produkty</div>
+        <div class="app-tiles" id="appTilesL"></div>
+        <div class="app-bottom">
+          <div class="bt on"><i class="ti ti-home"></i>Start</div>
+          <div class="bt"><i class="ti ti-arrows-left-right"></i>Płatności</div>
+          <div class="bt blik"><span class="bc">BLIK</span></div>
+          <div class="bt"><i class="ti ti-gift"></i>Oferty</div>
+          <div class="bt"><i class="ti ti-menu-2"></i>Więcej</div>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="phone-col">
+      <div class="col-tag tagR"><i class="ti ti-bolt"></i>Aplikacja — z aktywacją (Persooa)<span class="pill">PERSONALIZACJA: ON</span></div>
+      <div class="device"><div class="screen">
+        <div class="statusbar"><span>9:41</span><span class="sb-ic"><i class="ti ti-signal-4g"></i><i class="ti ti-wifi"></i><i class="ti ti-battery-3"></i></span></div>
+        <div class="app-top"><div class="av">AS</div><div><div class="hi">Dzień dobry</div><div class="nm">Arkadiusz</div></div><div class="bell"><i class="ti ti-bell"></i><span class="dot"></span></div></div>
+        <div class="appreco"><i class="ti ti-radar-2"></i><span id="appReco"></span><span class="lv"><span class="bl"></span>NA ŻYWO</span></div>
+        <div id="appPush"></div>
+        <div class="bal-card"><div class="bl1">Konto osobiste</div><div class="bl2">12 480,50 zł</div><div class="bl3">•••• 8842</div></div>
+        <div class="qa-row">
+          <div class="qa"><div class="qc"><i class="ti ti-qrcode"></i></div>BLIK</div>
+          <div class="qa"><div class="qc"><i class="ti ti-arrow-up-right"></i></div>Przelew</div>
+          <div class="qa"><div class="qc"><i class="ti ti-scan"></i></div>Kod QR</div>
+          <div class="qa"><div class="qc"><i class="ti ti-plus"></i></div>Doładuj</div>
+        </div>
+        <div class="inapp"><div class="inapp-h"><i class="ti ti-sparkles"></i><span id="appInappT"></span><span class="tag">PERSOOA</span></div><div class="inapp-b" id="appInappB"></div></div>
+        <div class="app-sec-h">Dla Ciebie</div>
+        <div class="app-tiles" id="appTilesR"></div>
+        <div class="app-bottom">
+          <div class="bt on"><i class="ti ti-home"></i>Start</div>
+          <div class="bt"><i class="ti ti-arrows-left-right"></i>Płatności</div>
+          <div class="bt blik"><span class="bc">BLIK</span></div>
+          <div class="bt"><i class="ti ti-gift"></i>Oferty</div>
+          <div class="bt"><i class="ti ti-menu-2"></i>Więcej</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="app-kpi"><span class="v" id="appKpiV"></span><span class="l" id="appKpiL"></span><i class="ti ti-trending-up" style="margin-left:auto;font-size:24px;color:var(--velo)"></i></div>
+</div>
+</div><!-- /view-app -->
+
+<div id="view-how" class="view pview" hidden>
+  <header class="p-hero"><div class="pw">
+    <div class="brand"><img src="persooa-logo.svg" alt="Persooa" style="height:30px;display:block"></div>
+    <span class="p-eye">Agentic Lead Generation · dla bankowości</span>
+    <h1>Więcej sprzedaży i leadów<br><em>z tego samego ruchu.</em></h1>
+    <div class="p-chips" style="margin-top:16px">
+      <span class="p-chip"><i class="ti ti-database" style="vertical-align:-2px"></i> Dane 1st-party</span>
+      <span class="p-chip"><i class="ti ti-shield-lock" style="vertical-align:-2px"></i> Prywatny Claude</span>
+      <span class="p-chip"><i class="ti ti-building-bank" style="vertical-align:-2px"></i> Wewnątrz środowiska banku</span>
+    </div>
+    <p class="p-lead">Bez nowego budżetu mediowego: agent AI wyławia gorące intencje z anonimowego ruchu (90%+ wizyt) i domyka je — od razu online albo przez doradcę. Wszystko na danych 1st-party i prywatnym Claude, wewnątrz środowiska banku.</p>
+    <div><button class="p-cta" data-goto="web">Zobacz demo strony WWW</button><button class="p-cta gh" data-goto="app">…i aplikacji mobilnej</button></div>
+    <div class="p-stats">
+      <div class="p-stat"><div class="k">Ruch na stronie</div><div class="v"><span>90%+</span> anonimowe</div></div>
+      <div class="p-stat"><div class="k">Wdrożenie</div><div class="v">w <span>tygodniach</span></div></div>
+      <div class="p-stat"><div class="k">Efekt</div><div class="v"><span>gwarantowany</span> wzrost leadów</div></div>
+    </div>
+  </div></header>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Problem</span>
+    <h2>Klient liczy ratę, czyta o koncie — i wychodzi <em>bez śladu</em>.</h2>
+    <div class="p-sub">
+      <div><b>Skala</b><p>Ponad 90% ruchu na stronie banku jest anonimowe. To nie wyjątek — to reguła.</p></div>
+      <div><b>Strata</b><p>Klasyczny lead-gen łapie tylko tych, którzy sami wypełnią formularz. Ułamek realnego zainteresowania.</p></div>
+      <div><b>Paradoks</b><p>Wśród anonimów są obecni klienci banku — z wysoką intencją, których nie sposób rozpoznać w czasie rzeczywistym.</p></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Jak to działa</span>
+    <h2>Cała inteligencja dzieje się <em>wewnątrz granicy banku</em>.</h2>
+    <p class="p-lead">Identity resolution i dane osobowe zostają w środowisku banku. Do modelu trafiają wyłącznie pseudonimizowane sygnały — intencja, segment, dopasowanie do profilu. Wynik wraca jako konwersja w kanale cyfrowym albo gorący lead do doradcy. Nic osobowego nie przekracza granicy.</p>
+    <div class="p-flow">
+      <div class="p-node ext"><div class="nk">Wejście</div><div class="nt">Anonimowy ruch</div><div class="nd">Wizyta bez logowania i bez formularza — WWW lub aplikacja.</div></div>
+      <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
+      <div class="p-node"><div class="nk">Silnik danych</div><div class="nt">Identity resolution</div><div class="nd">Rozpoznaje sygnał, dopasowuje do bazy. PII zostaje tutaj.</div></div>
+      <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
+      <div class="p-node"><div class="nk">Private Claude · Azure</div><div class="nt">Rozpoznanie intencji</div><div class="nd">Widzi pseudonimizowane cechy. Nie zapamiętuje, nie trenuje.</div></div>
+      <div class="p-conn"><i class="ti ti-arrow-right"></i></div>
+      <div class="p-node lead"><div class="nk">Wynik</div><div class="nt">Zakup lub lead</div><div class="nd">Konwersja od razu w kanale cyfrowym albo gorący lead do doradcy — zanim klient zniknie.</div></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Możliwości</span>
+    <h2>Co konkretnie robi agent — <em>w jednym miejscu</em>.</h2>
+    <div class="p-cards">
+      <div class="p-card"><div class="ck">Real-time</div><h3>Rozpoznanie intencji</h3><p>Klasyfikuje zamiar (kredyt, konto, oszczędności…) na podstawie zachowania w tej sesji.</p></div>
+      <div class="p-card"><div class="ck">Identity</div><h3>Identyfikacja bez logowania</h3><p>Łączy anonimową sesję z profilem klienta przez device-graph i sygnały 1st-party.</p></div>
+      <div class="p-card"><div class="ck">Decyzja</div><h3>Next-best-action</h3><p>Wybiera najlepszy następny krok: oferta, callback, handoff, zapis, oszczędność.</p></div>
+      <div class="p-card"><div class="ck">Treść</div><h3>Dynamiczny hero i baner</h3><p>Podmienia nagłówek, CTA i baner pod rozpoznaną intencję — w milisekundach.</p></div>
+      <div class="p-card"><div class="ck">Oferta</div><h3>Rekomendacje produktowe</h3><p>Przeszereguje ofertę i cross-sell na bazie tego, co klient ma i czego mu brakuje.</p></div>
+      <div class="p-card"><div class="ck">Lead</div><h3>Scoring i routing</h3><p>Punktuje gorącość leada i kieruje go do właściwego doradcy z pełnym kontekstem.</p></div>
+      <div class="p-card"><div class="ck">Omnichannel</div><h3>Handoff WWW → aplikacja</h3><p>Przenosi rozpoczęty wniosek na telefon (SMS / kod QR) z autouzupełnieniem.</p></div>
+      <div class="p-card"><div class="ck">Rescue</div><h3>Exit-intent i powiadomienia</h3><p>Ratuje porzucone sesje: zapis oferty, push, in-app message, follow-up.</p></div>
+      <div class="p-card"><div class="ck">Pomiar</div><h3>Holdout i A/B</h3><p>Każdy efekt na grupie kontrolnej — raportujemy wyłącznie realny przyrost.</p></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Sygnały → kanały</span>
+    <h2>Czym się karmi i <em>gdzie</em> działa.</h2>
+    <div class="p-io">
+      <div class="col in">
+        <h4><i class="ti ti-radar-2"></i>Sygnały, które rozpoznajemy</h4>
+        <ul>
+          <li><i class="ti ti-route"></i><span><b>Behawioralne</b> — odwiedzane sekcje, kalkulatory, czas, ścieżka, powroty</span></li>
+          <li><i class="ti ti-receipt"></i><span><b>Transakcyjne (1st-party)</b> — wpływy, wydatki, subskrypcje, posiadane produkty</span></li>
+          <li><i class="ti ti-devices"></i><span><b>Device-graph</b> — rozpoznanie powrotu bez logowania, wiele urządzeń</span></li>
+          <li><i class="ti ti-map-pin"></i><span><b>Kontekst</b> — lokalizacja, pora, urządzenie, kampania źródłowa</span></li>
+          <li><i class="ti ti-database"></i><span><b>Profil z bazy</b> — segment, scoring, etap cyklu życia klienta</span></li>
+        </ul>
+      </div>
+      <div class="col out">
+        <h4><i class="ti ti-broadcast"></i>Kanały, w których aktywujemy</h4>
+        <ul>
+          <li><i class="ti ti-world"></i><span><b>Strona WWW</b> — hero, banery, rekomendacje, pre-fill formularzy</span></li>
+          <li><i class="ti ti-device-mobile"></i><span><b>Aplikacja mobilna</b> — in-app message, kafle, push</span></li>
+          <li><i class="ti ti-message"></i><span><b>SMS / e-mail</b> — link do dokończenia wniosku, follow-up</span></li>
+          <li><i class="ti ti-headset"></i><span><b>Call center</b> — gorący lead z kontekstem prosto do doradcy</span></li>
+          <li><i class="ti ti-ad-2"></i><span><b>Reklamy</b> — audiencje 1st-party, bez 3rd-party cookies</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="p-chips" style="margin-top:24px"><span class="p-chip">Działa z istniejącym stackiem:</span><span class="p-chip">Synerise / CDP</span><span class="p-chip">Azure</span><span class="p-chip">Private Claude</span><span class="p-chip">CRM</span><span class="p-chip">Marketing automation</span><span class="p-chip">Google / Meta audiences</span></div>
+
+    <div class="p-lead-card">
+      <div class="lh"><i class="ti ti-flame"></i>Co dostaje doradca — przykładowy lead<span class="badge">ANONIMIZOWANY</span></div>
+      <div class="p-lr"><span class="k">Intencja</span><span class="v">Kredyt hipoteczny — wysoka</span></div>
+      <div class="p-lr"><span class="k">Lead score</span><span class="v hot">92 / 100 · gorący</span></div>
+      <div class="p-lr"><span class="k">Powód (sygnał)</span><span class="v">3× kalkulator, 6 min, 3. wizyta dziś</span></div>
+      <div class="p-lr"><span class="k">Rekomendacja (NBA)</span><span class="v">Callback + oferta 6,57% RRSO</span></div>
+      <div class="p-lr"><span class="k">Kanał i termin</span><span class="v">Telefon · dziś do 18:00</span></div>
+      <div class="p-lr"><span class="k">Cross-sell</span><span class="v">Ubezpieczenie do hipoteki</span></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Matryca scenariuszy</span>
+    <h2>Co <em>rozpoznajemy</em> i co rekomendujemy — w każdym kanale.</h2>
+    <p class="p-lead">Ten sam silnik na stronie WWW (ruch anonimowy) i w aplikacji (klienci z kontekstem). Sygnał → rekomendacja, scenariusz po scenariuszu.</p>
+    <table class="p-matrix">
+      <thead><tr><th>Scenariusz</th><th>Kanał</th><th>Co rozpoznajemy</th><th>Co rekomendujemy</th></tr></thead>
+      <tbody>
+        <tr><td class="sc-name">Intencja hipoteczna</td><td><span class="ch www">WWW</span></td><td>3× kalkulator rat w 7 dni</td><td class="rec">Oferta hipoteki 6,57% + „sprawdź zdolność"</td></tr>
+        <tr><td class="sc-name">Porzucony wniosek</td><td><span class="ch www">WWW</span></td><td>wniosek przerwany na kroku 3/5</td><td class="rec">Wznowienie z zapamiętanym postępem</td></tr>
+        <tr><td class="sc-name">Powracający gość</td><td><span class="ch www">WWW</span></td><td>device-graph, kolejna wizyta</td><td class="rec">Skrót do ostatnich spraw zamiast oferty od zera</td></tr>
+        <tr><td class="sc-name">Kalkulator → oferta</td><td><span class="ch www">WWW</span></td><td>symulacja kwoty i raty na żywo</td><td class="rec">Gotowa, wstępnie zatwierdzona oferta</td></tr>
+        <tr><td class="sc-name">Exit-intent</td><td><span class="ch www">WWW</span></td><td>zamiar opuszczenia strony</td><td class="rec">Zapis oferty + link SMS do dokończenia</td></tr>
+        <tr><td class="sc-name">Wykryto logowanie</td><td><span class="ch www">WWW</span></td><td>sam fakt logowania → tag „klient" (bez CRM)</td><td class="rec">Dyskretny przekaz lojalnościowy (VeloKorzyści)</td></tr>
+        <tr><td class="sc-name">Tag: klient / prospekt</td><td><span class="ch www">WWW</span></td><td>zalogowany vs niezalogowany</td><td class="rec">Dwie różne kampanie na jednym ekranie</td></tr>
+        <tr><td class="sc-name">Dokończ wniosek</td><td><span class="ch app">APP</span></td><td>wniosek w toku (3/5)</td><td class="rec">In-app: dokończ z autouzupełnieniem i podpisem</td></tr>
+        <tr><td class="sc-name">Pre-approved karta</td><td><span class="ch app">APP</span></td><td>aktywny klient bez karty kredytowej</td><td class="rec">Wstępny limit 18 500 zł do aktywacji</td></tr>
+        <tr><td class="sc-name">Cross-sell z transakcji</td><td><span class="ch app">APP</span></td><td>4 subskrypcje miesięczne</td><td class="rec">Rozłożenie na raty 0% (VeloChwile)</td></tr>
+        <tr><td class="sc-name">Nudge oszczędności</td><td><span class="ch app">APP</span></td><td>nadwyżka +2 300 zł vs średnia</td><td class="rec">„Odłóż 2 000 zł na 5,5%"</td></tr>
+        <tr><td class="sc-name">Reaktywacja</td><td><span class="ch app">APP</span></td><td>30 dni bez logowania</td><td class="rec">Powrót + 142 zł VeloKorzyści do odebrania</td></tr>
+      </tbody>
+    </table>
+    <p class="p-lead" style="margin-top:18px;font-size:.95rem">Na WWW działamy „w ciemno" na sygnałach 1st-party (bez CRM). W aplikacji — na pełnym kontekście klienta.</p>
+  </div></section>
+
+  <section class="p-sec p-demo"><div class="pw">
+    <span class="p-eye g">Symulacja na żywo</span>
+    <h2>Zobacz to na <em>żywej stronie i ofercie VeloBanku</em>.</h2>
+    <p class="p-lead">Bez slajdów. Pełny, klikalny demonstrator — ta sama strona przed rozpoznaniem i po, plus aplikacja mobilna z personalizacją in-app.</p>
+    <div class="p-demo-card">
+      <div class="p-demo-prev">
+        <div class="pmini l"><div class="ph"></div><div class="pbd"><div class="pl">Bez aktywacji</div><div class="bar w"></div><div class="bar m"></div><div class="bar w"></div><div class="bar m"></div></div></div>
+        <div class="pmini r"><div class="ph"></div><div class="pbd"><div class="pl">Z Persooa</div><div class="bar w"></div><div class="bar hot"></div><div class="bar m"></div><div class="bar w"></div></div></div>
+      </div>
+      <div class="p-demo-cta">
+        <h3>Otwórz interaktywne demo</h3>
+        <button class="p-cta big" data-goto="web"><i class="ti ti-world"></i> Symulacja strony WWW</button>
+        <button class="p-cta gh big" data-goto="app"><i class="ti ti-device-mobile"></i> Symulacja aplikacji mobilnej</button>
+        <span class="meta">15 scenariuszy na WWW · 10 in-app · personalizacja w czasie rzeczywistym</span>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye g">Playbook</span>
+    <h2>Co naprawdę konwertuje w ruchu <em>anonimowym</em>.</h2>
+    <div class="p-cards">
+      <div class="p-card"><div class="ck">Rescue · porzucony wniosek</div><h3>Wznowienie procesu</h3><p>Klient przerwał na kroku 3/5 — wracamy z zapamiętanym postępem zamiast formularza od zera.</p></div>
+      <div class="p-card"><div class="ck">Handoff · desktop → mobile</div><h3>Dokończ w aplikacji</h3><p>Wysyłamy wniosek SMS-em albo kodem QR do dokończenia na telefonie. Mobilne finisze konwertują wyżej.</p></div>
+      <div class="p-card"><div class="ck">Exit-intent · ratunek</div><h3>Zapis oferty przy wyjściu</h3><p>Wykrywamy zamiar opuszczenia strony i zapisujemy ofertę zanim klient zniknie.</p></div>
+      <div class="p-card"><div class="ck">Hot lead · człowiek</div><h3>Proaktywny callback doradcy</h3><p>Najgorętsze leady trafiają do człowieka w szczycie intencji — bez czekania na formularz.</p></div>
+      <div class="p-card"><div class="ck">Pilność · realna</div><h3>Rezerwacja oferty na czas sesji</h3><p>Rezerwujemy faktyczny limit z odliczaniem. Prawdziwa pilność, nie sztuczny timer dla wszystkich.</p></div>
+      <div class="p-card"><div class="ck">In-app · push i powiadomienia</div><h3>Aktywacja w aplikacji</h3><p>Rozpoznaną intencję domykamy in-appem, pushem i kafle dopasowanymi do zachowania w aplikacji.</p></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Dlaczego tylko Persooa</span>
+    <h2>Trzy elementy, których nikt nie ma <em>złożonych w jedno</em>.</h2>
+    <div class="p-cards">
+      <div class="p-card"><div class="ck">01 · Silnik</div><h3>Identity resolution</h3><p>Rozpoznaje anonima i dopasowuje go do bazy klientów banku w czasie rzeczywistym.</p></div>
+      <div class="p-card"><div class="ck">02 · Mózg</div><h3>Private Claude na Azure</h3><p>Agent w środowisku banku, z Zero Data Retention. Rozumie intencję — nie zapamiętuje danych.</p></div>
+      <div class="p-card"><div class="ck">03 · Paliwo</div><h3>Dane first-party banku</h3><p>Aktywacja danych, których nie ma żaden zewnętrzny dostawca. To one zamieniają ruch w cross-sell.</p></div>
+    </div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Bezpieczeństwo i model</span>
+    <h2>Dane osobowe nie opuszczają środowiska banku.</h2>
+    <div class="p-chips"><span class="p-chip">Data minimization w perymetrze</span><span class="p-chip">Zero Data Retention</span><span class="p-chip">Brak treningu na danych banku</span><span class="p-chip">Private Claude on Azure</span><span class="p-chip">Gwarantowany wzrost leadów</span></div>
+    <div class="p-bars">
+      <div class="p-bar c"><div class="col"></div><div class="bl">Grupa<br>kontrolna</div></div>
+      <div class="p-bar t"><div class="col"></div><div class="bl">Grupa<br>z agentem</div></div>
+    </div>
+    <p class="p-lead" style="margin-top:18px">Różnica między grupą prowadzoną przez agenta a kontrolną to realny, gwarantowany wzrost leadów — mierzony na grupie kontrolnej, nie deklarowany.</p>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye g">Model komercyjny</span>
+    <h2>Zero nowego budżetu.</h2>
+    <p class="p-lead">Agent działa w tenancie Azure banku i jest rozliczany przez Azure Marketplace. Konsumpcja burnuje istniejący commitment wobec Microsoftu (MACC) — bez nowej linii budżetowej, bez onboardingu nowego dostawcy, bez osobnego procurementu.</p>
+    <div class="p-chips"><span class="p-chip">MACC burn-down</span><span class="p-chip">Microsoft jako reseller</span><span class="p-chip">Jedna faktura Azure</span><span class="p-chip">Wdrożenie w tygodniach</span></div>
+  </div></section>
+
+  <section class="p-sec"><div class="pw">
+    <span class="p-eye">Wdrożenie</span>
+    <h2>Trzy kroki. Pierwszy trwa <em>trzy tygodnie</em>.</h2>
+    <div class="p-steps">
+      <div class="p-step"><div class="sn">01</div><h3>Diagnoza potencjału</h3><p>3 tygodnie, stała cena. Wyliczenie co do złotówki, ile anonimowego ruchu dziś przepada — na realnych danych banku.</p></div>
+      <div class="p-step"><div class="sn">02</div><h3>Pilot z grupą kontrolną</h3><p>Jeden proces (np. hipoteka), przyrost udowodniony na grupie kontrolnej (holdout), ograniczone ryzyko i czas.</p></div>
+      <div class="p-step"><div class="sn">03</div><h3>Skalowanie (Managed Growth)</h3><p>Pełna warstwa agentów prowadzona przez zespół Persooa. Kolejne procesy, kanały i ciągła optymalizacja.</p></div>
+    </div>
+  </div></section>
+
+  <section class="p-cta-band"><div class="pw">
+    <span class="p-eye g">Pierwszy krok</span>
+    <h2>Zacznijmy od <em>trzech tygodni</em>.</h2>
+    <p class="p-lead" style="margin:18px auto 0;text-align:center">Bezpłatna diagnoza pokaże dokładnie, ile anonimowego ruchu da się odzyskać — i ile to warte.</p>
+    <div style="margin-top:26px"><button class="p-cta">Umów bezpłatną konsultację</button><button class="p-cta gh" data-goto="web">Wróć do demo</button></div>
+  </div></section>
+  <div class="p-foot"><div class="pw" style="display:flex;justify-content:space-between;width:100%"><span>Persooa · Agentic Lead Generation for Banking</span><span>Dane 1st-party · Private Claude · Identity resolution</span></div></div>
+</div><!-- /view-how -->
+
+<script>
+const B="https://www.velobank.pl/storage/image/core_files/";
+const IMG={
+  heroWide:B+"2026/6/12/3c339a13314dc9e97ccef81243693f13/png/velobank/rotator-home-large/1920x500.png",
+  konto:B+"2026/3/6/d6ec49aa22584539f0f71bf617094f55/png/velobank/cta-box-image-medium/382x220%20%E2%80%93%20VeloKonto.png",
+  pozyczka:B+"2026/3/31/e1b53afcea4cf025776d33ad8f88666f/png/velobank/cta-box-image-medium/pozyczka.png",
+  konsolid:B+"2026/2/25/44ac12dc398485a6df98343806ace184/jpg/velobank/cta-box-image-medium/www_RRSO81_382x220.jpg",
+  auto:B+"2025/10/31/14038c6117d7ec0d545b25509660ff20/jpg/velobank/cta-box-image-medium/thumbnail_KS_WymarzoneAuto__m_640x320_.jpg",
+  velofotka:B+"2024/12/3/2afbc968c65e6893a7d257fe7f344936/jpg/velobank/cta-box-image-medium/velofotka-382x220.jpg",
+  medyczny:B+"2026/4/20/a0debe3360f986e938b3941d28cf7022/jpg/velobank/cta-box-image-medium/PakietMedyczny_640x320-mobile.jpg",
+  przelewy:B+"2026/2/11/890c1fcbedde30f9baa7490d07065f97/jpg/velobank/cta-box-image-medium/przelewy_www_640x320_mobile.jpg"
+};
+document.getElementById('heroL').style.backgroundImage=`url('${IMG.heroWide}')`;
+document.getElementById('heroR').style.backgroundImage=`url('${IMG.heroWide}')`;
+
+const PROD={
+  konto:{img:IMG.konto,h:'VeloKonto',p:'0 zł za prowadzenie i kartę, bez warunków.',pr:'<b>0 zł</b> / mies.'},
+  pozyczka:{img:IMG.pozyczka,h:'Pożyczka gotówkowa',p:'100% online, prowizja 0%.',pr:'RRSO <b>8,4%</b>'},
+  konsolid:{img:IMG.konsolid,h:'Kredyt konsolidacyjny',p:'Połącz raty w jedną, niższą.',pr:'RRSO <b>8,1%</b>'},
+  hipoteka:{img:IMG.medyczny,h:'Kredyt hipoteczny',p:'Twój dom, Twoja wygoda i miejsce na ziemi.',pr:'RRSO <b>6,57%</b>'},
+  auto:{img:IMG.auto,h:'Kredyt Wymarzone Auto',p:'Na nowe i używane auto.',pr:'RRSO <b>14,7%</b>'},
+  oszcz:{img:IMG.przelewy,h:'Lokata na Nowe Środki',p:'Zysk dla nowych oszczędności.',pr:'do <b>5,5%</b>'},
+  velofotka:{img:IMG.velofotka,h:'VeloFotka',p:'Pożyczka na zdjęcie rzeczy, której chcesz.',pr:'RRSO <b>0%</b>'},
+  karta:{img:IMG.medyczny,h:'Karta kredytowa',p:'Z programem VeloChwile i ratami 0%.',pr:'do <b>20 tys.</b>'}
+};
+function card(key,flag,badge){const p=PROD[key];return `<div class="prod ${flag?'flag':''}">${flag?`<span class="badge"><i class="ti ti-sparkles"></i>${badge}</span>`:''}<div class="img" style="background-image:url('${p.img}')"></div><div class="pb"><h4>${p.h}</h4><p>${p.p}</p><div class="pr">${p.pr}</div><span class="lnk">Sprawdź ofertę <i class="ti ti-arrow-right"></i></span></div></div>`;}
+document.getElementById('prodsL').innerHTML=['konto','pozyczka','oszcz','karta'].map(k=>card(k,false)).join('');
+
+const UC=[
+{n:'Powracający gość',reco:'<b>Rozpoznano powracającego gościa</b> · 4. wizyta · spójny device-graph, bez logowania',eyebrow:'Witaj ponownie',title:'Dokończ to,<br>co zacząłeś',sub:'Wracasz do nas po raz kolejny — pokazujemy skrót do Twoich spraw zamiast oferty od zera.',cta:'Wróć do panelu',nav:'Wróć do panelu',note:'<i class="ti ti-history"></i>Ostatnio: pożyczka gotówkowa',smartT:'Twój skrót — kontynuuj',smart:'<div class="kv"><span class="k"><i class="ti ti-eye" style="color:var(--velo-d)"></i> Ostatnio oglądane</span><span class="v">Pożyczka 30 000 zł</span></div><div class="kv"><span class="k">Etap</span><span class="v">Symulacja raty</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Wróć do symulacji</button>',kpiV:'+34%',kpiL:'Konwersja powracających gości vs. ekran generyczny',prodSub:'Kolejność oferty dopasowana do Twojej historii.',prods:['pozyczka','konto','oszcz','karta'],badge:'Dla Ciebie',app:'Saldo, BLIK i Twoje rozpoczęte wnioski — wszystko w jednym miejscu.'},
+{n:'Porzucony wniosek',reco:'<b>Wykryto porzucony wniosek</b> · pożyczka gotówkowa, przerwana na kroku 3 z 5',eyebrow:'Twój wniosek czeka',title:'Zostały już<br>tylko 2 kroki',sub:'Zapisaliśmy wszystkie dane, które wpisałeś. Dokończ pożyczkę 100% online w niecałe 2 minuty.',cta:'Wznów wniosek',nav:'Wznów wniosek',note:'<i class="ti ti-device-floppy"></i>Dane zapisane',smartT:'Twój wniosek o pożyczkę',smart:'<div class="kv"><span class="k">Kwota</span><span class="v">30 000 zł · 48 rat</span></div><div class="kv"><span class="k">Postęp wniosku</span><span class="v" style="color:var(--velo-d)">krok 3 / 5</span></div><div class="prog"><i style="width:60%"></i></div><div style="font-size:12px;color:var(--muted);margin-top:4px">Pozostało: weryfikacja dochodu i podpis.</div><button class="btn btn-pri btn-block" style="margin-top:14px">Dokończ wniosek</button>',kpiV:'+27%',kpiL:'Odzyskane porzucone wnioski o pożyczkę',prodSub:'Skupiamy uwagę na produkcie, który zacząłeś brać.',prods:['pozyczka','konto','konsolid','karta'],badge:'W toku',app:'Dokończ wniosek z telefonu i podpisz go w aplikacji w 30 sekund.'},
+{n:'Intencja: hipoteka',reco:'<b>Intencja zakupowa: kredyt hipoteczny</b> · 3× kalkulator rat w ostatnich 7 dniach',eyebrow:'Twój dom, Twoje miejsce',title:'Kredyt hipoteczny<br>RRSO 6,57%',sub:'Na podstawie Twoich kalkulacji rata wychodzi od 2 140 zł. Sprawdź zdolność bez wpływu na BIK.',cta:'Sprawdź zdolność',nav:'Sprawdź zdolność',note:'<i class="ti ti-shield-check"></i>Bez wpływu na BIK',smartT:'Twoja symulacja hipoteki',smart:'<div style="display:flex;align-items:flex-end;gap:14px"><div><div style="font-size:11px;color:var(--muted);font-weight:700">SZACOWANA RATA</div><div class="bigrate">2 140 zł</div></div><div style="font-size:12px;color:var(--muted);padding-bottom:6px;line-height:1.5">kwota 420 000 zł<br>okres 25 lat</div></div><div class="kv" style="margin-top:8px"><span class="k">Wstępna zdolność</span><span class="v" style="color:var(--velo-d)">do 510 000 zł</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Złóż wniosek o hipotekę</button>',kpiV:'+41%',kpiL:'Wartościowe leady hipoteczne (najwyższe CLV)',prodSub:'Na pierwszym planie produkt zgodny z Twoją intencją.',prods:['hipoteka','konto','oszcz','konsolid'],badge:'Intencja',app:'Złóż wniosek o hipotekę i śledź jego status na bieżąco w aplikacji.'},
+{n:'Intencja: karta kredytowa',reco:'<b>Intencja: karta kredytowa</b> · 3× sekcja kart, porównywarka opłat, kalkulator limitu',eyebrow:'Szukasz karty?',title:'Karta kredytowa<br>z limitem do 20 000 zł',sub:'Oglądasz karty kredytowe — pokazujemy najlepiej dopasowaną: raty 0%, program VeloChwile i decyzja online w 15 minut.',cta:'Wnioskuj o kartę',nav:'Wnioskuj o kartę',note:'<i class="ti ti-credit-card"></i>Decyzja online w 15 min',smartT:'Karta dopasowana do intencji',smart:'<div class="cardviz"><div class="chip"></div><div class="lab">VeloBank · karta kredytowa</div><div class="cn">Limit do 20 000 zł</div><div style="margin-top:12px"><span class="lab">raty 0% · VeloChwile</span><div class="lim">decyzja w 15 min</div></div></div><button class="btn btn-pri btn-block" style="margin-top:14px">Wnioskuj o kartę</button>',kpiV:'+52%',kpiL:'Konwersja przy intencji „karta kredytowa"',prodSub:'Na pierwszym planie produkt zgodny z Twoją intencją.',prods:['karta','konto','pozyczka','oszcz'],badge:'Intencja',app:'Wniosek o kartę dokończysz w aplikacji.'},
+{n:'Segment: młodzi',reco:'<b>Segment 18–26 lat</b> · ruch z kampanii dla młodych, urządzenie mobilne',eyebrow:'Konto dla młodych',title:'VeloKonto 0 zł<br>naprawdę bez warunków',sub:'Zero opłat za konto i kartę, BLIK i aplikacja w cenie. Załóż konto w 8 minut, w pełni online.',cta:'Załóż VeloKonto',nav:'Załóż konto',note:'<i class="ti ti-confetti"></i>0 zł bez warunków',smartT:'Oferta dla młodych',smart:'<div class="kv"><span class="k">Konto i karta</span><span class="v" style="color:var(--velo-d)">0 zł, bez warunków</span></div><div class="kv"><span class="k">BLIK i wypłaty z bankomatów</span><span class="v">0 zł</span></div><div class="kv"><span class="k">VeloKorzyści</span><span class="v">zwroty za zakupy</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Załóż VeloKonto</button>',kpiV:'+38%',kpiL:'Konwersja w segmencie demograficznym',prodSub:'Oferta przefiltrowana pod młodego klienta.',prods:['konto','karta','velofotka','oszcz'],badge:'18–26 lat',app:'Cała obsługa konta z telefonu — bez wizyty w placówce.'},
+{n:'Porównuje oferty',reco:'<b>Tryb porównywania ofert</b> · wejście z porównywarki + strona „Opłaty”',eyebrow:'Porównujesz? Dobrze trafiłeś',title:'Konto bez opłat —<br>i bez gwiazdek',sub:'Przyszedłeś z porównywarki. Mówimy wprost: 0 zł za konto, kartę i wypłaty z bankomatów — bez warunków i bez ukrytych kosztów.',cta:'Załóż konto 0 zł',nav:'Załóż konto',note:'<i class="ti ti-checks"></i>Bez ukrytych opłat',smartT:'Porównanie kosztów rocznych',smart:'<div class="kv"><span class="k">U konkurencji (śr.)</span><span class="v" style="color:var(--red)">~ 348 zł / rok</span></div><div class="kv"><span class="k">W VeloBanku</span><span class="v" style="color:var(--velo-d)">0 zł / rok</span></div><div class="kv"><span class="k">Twoja oszczędność</span><span class="v" style="color:var(--velo-d)">~ 348 zł / rok</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Załóż konto 0 zł</button>',kpiV:'+24%',kpiL:'Konwersja gości z porównywarek (łowcy okazji)',prodSub:'Eksponujemy przewagę cenową dla porównującego.',prods:['konto','oszcz','karta','pozyczka'],badge:'Porównanie',app:'Po założeniu konta — pełna obsługa w aplikacji.'},
+{n:'Pre-fill formularza',reco:'<b>Znane dane sesji</b> · miasto, urządzenie, wstępny scoring — bez logowania',eyebrow:'Szybka ścieżka',title:'Wypełniliśmy<br>wniosek za Ciebie',sub:'Sprawdź dane, które już znamy z Twojej sesji, i potwierdź pożyczkę 100% online jednym kliknięciem.',cta:'Potwierdź i wyślij',nav:'Potwierdź dane',note:'<i class="ti ti-bolt"></i>3 pola zamiast 11',smartT:'Wniosek — uzupełniony',smart:'<div class="field"><i class="ti ti-map-pin"></i>Miasto: Kraków<span class="chk"><i class="ti ti-circle-check-filled"></i></span></div><div class="field"><i class="ti ti-calculator"></i>Kwota i rata: z Twojego kalkulatora<span class="chk"><i class="ti ti-circle-check-filled"></i></span></div><div class="field"><i class="ti ti-chart-line"></i>Wstępna zdolność: pozytywna<span class="chk"><i class="ti ti-circle-check-filled"></i></span></div><button class="btn btn-pri btn-block" style="margin-top:6px">Potwierdź i wyślij</button>',kpiV:'+44%',kpiL:'Ukończenie wniosku (redukcja frictionu)',prodSub:'Mniej kroków = wyższa konwersja na każdym produkcie.',prods:['pozyczka','konto','konsolid','karta'],badge:'Szybka ścieżka',app:'Dokończ dowolny wniosek w aplikacji — dane przenoszą się automatycznie.'},
+{n:'Geo-oferta',reco:'<b>Kontekst lokalny: Kraków</b> · najbliższa placówka 1,2 km, wolne terminy dziś',eyebrow:'Oferta w Twojej okolicy',title:'Doradca w placówce<br>Kraków-Rynek',sub:'Masz placówkę VeloBank tuż obok. Umów spotkanie jeszcze dziś — wolne terminy do 18:00.',cta:'Umów wizytę',nav:'Umów wizytę',note:'<i class="ti ti-map-pin"></i>1,2 km od Ciebie',smartT:'Najbliższa placówka',smart:'<div class="maprow"><div class="mapbox"><div class="ln" style="left:0;right:0;top:24px;height:3px"></div><div class="ln" style="top:0;bottom:0;left:42px;width:3px"></div><i class="ti ti-map-pin-filled pin"></i></div><div><div style="font-weight:900;font-size:14px">Kraków-Rynek, Floriańska 12</div><div style="font-size:12px;color:var(--muted);margin-top:3px"><i class="ti ti-walk"></i> 1,2 km · czynne do 18:00</div><div style="font-size:12px;color:var(--velo-d);font-weight:700;margin-top:4px"><i class="ti ti-clock-hour-4"></i> Wolne: 15:30, 16:15, 17:00</div></div></div><button class="btn btn-pri btn-block" style="margin-top:14px">Zarezerwuj termin</button>',kpiV:'+23%',kpiL:'Wizyty i konwersja w placówce (omnichannel)',prodSub:'Treść dopasowana do Twojej lokalizacji.',prods:['konto','pozyczka','hipoteka','karta'],badge:'W okolicy',app:'Nawigacja do placówki i bilet kolejkowy prosto z aplikacji.'},
+{n:'Kalkulator → oferta',reco:'<b>Ostatnia akcja: kalkulator rat</b> · kwota 50 000 zł, okres 60 mies.',eyebrow:'Twoja symulacja',title:'Pożyczka 50 000 zł<br>rata 1 090 zł/mc',sub:'Dokładnie taką pożyczkę liczyłeś przed chwilą. Mamy dla Ciebie gotową, wstępnie zatwierdzoną ofertę.',cta:'Weź tę pożyczkę',nav:'Weź pożyczkę',note:'<i class="ti ti-check"></i>Wstępna zgoda',smartT:'Twoja gotowa oferta',smart:'<div class="kv"><span class="k">Kwota</span><span class="v">50 000 zł</span></div><div class="kv"><span class="k">Rata miesięczna</span><span class="v" style="color:var(--velo-d);font-size:15px">1 090 zł</span></div><div class="kv"><span class="k">Okres / RRSO</span><span class="v">60 mies. · 8,4%</span></div><div class="kv"><span class="k">Status</span><span class="v" style="color:var(--velo-d)">wstępnie zatwierdzona</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Akceptuję ofertę</button>',kpiV:'+36%',kpiL:'Przejście z kalkulatora do złożonego wniosku',prodSub:'Kontynuacja dokładnie tej kalkulacji, którą wykonałeś.',prods:['pozyczka','konsolid','konto','karta'],badge:'Twoja symulacja',app:'Zaakceptuj ofertę i odbierz środki na konto nawet w 15 minut.'},
+{n:'Retargeting bez cookies',reco:'<b>Spójna tożsamość 1st-party</b> · powrót z reklamy, bez cookies 3rd-party',eyebrow:'Pamiętamy Twój wybór',title:'Wróciłeś po kredyt<br>Wymarzone Auto',sub:'Ten sam produkt i komunikat, który widziałeś w reklamie — bez utraty kontekstu i bez plików third-party.',cta:'Dokończ wniosek',nav:'Dokończ wniosek',note:'<i class="ti ti-cookie-off"></i>Bez 3rd-party cookies',smartT:'Kontynuujesz z reklamy',smart:'<div class="kv"><span class="k">Produkt z reklamy</span><span class="v">Wymarzone Auto</span></div><div class="kv"><span class="k">Kwota</span><span class="v">60 000 zł · RRSO 14,7%</span></div><div class="kv"><span class="k">Spójność przekazu</span><span class="v" style="color:var(--velo-d)">reklama → strona → koszyk</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Wróć do wniosku</button>',kpiV:'+29%',kpiL:'Spójność kampanii w świecie bez 3rd-party cookies',prodSub:'Strona dopasowana do reklamy, z której przyszedłeś.',prods:['auto','konto','pozyczka','karta'],badge:'Z reklamy',app:'Złóż wniosek o kredyt samochodowy i śledź decyzję w aplikacji.'},
+
+{n:'Exit-intent — ratunek',reco:'<b>Wykryto zamiar opuszczenia strony</b> · kursor do zamknięcia karty, w trakcie wniosku o pożyczkę',eyebrow:'Zaczekaj chwilę',title:'Zapiszemy Twoją<br>ofertę na potem',sub:'Nie trać postępu. Wyślemy Ci link do dokończenia wniosku, kiedy będzie Ci wygodnie — bez wypełniania od nowa.',cta:'Wyślij mi link',nav:'Zapisz ofertę',note:'<i class="ti ti-door-exit"></i>Reakcja na exit-intent',smartT:'Zanim wyjdziesz — zapisz ofertę',smart:'<div style="display:flex;gap:11px;align-items:center;margin-bottom:13px"><div style="width:40px;height:40px;border-radius:6px;background:var(--velo-100);display:flex;align-items:center;justify-content:center;color:var(--velo-d);font-size:21px"><i class="ti ti-hand-stop"></i></div><div style="font-weight:900;font-size:14.5px;line-height:1.25">Ta oferta pożyczki nie przepadnie</div></div><div class="kv"><span class="k">Pożyczka 30 000 zł · RRSO 8,4%</span><span class="v" style="color:var(--velo-d)">zarezerwowana</span></div><div style="display:flex;gap:8px;margin-top:13px"><input class="sm-input" placeholder="Nr telefonu"><button class="btn btn-pri">Wyślij link SMS</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:8px">Albo zapiszemy ją pod Twoim adresem e-mail z sesji.</div>',kpiV:'+18%',kpiL:'Uratowane sesje dzięki reakcji na zamiar wyjścia',prodSub:'Ostatnia szansa na kontakt, zanim klient zniknie bez śladu.',prods:['pozyczka','konsolid','konto','karta'],badge:'Exit-intent',app:'Link do dokończenia wniosku trafia też jako powiadomienie w aplikacji.'},
+
+{n:'Dokończ w aplikacji',reco:'<b>Wysoka intencja na desktopie</b> · długi formularz wniosku, godziny pracy',eyebrow:'Wygodniej na telefonie',title:'Dokończ wniosek<br>w aplikacji VeloBank',sub:'Zeskanuj kod albo wyślij sobie link SMS — wniosek otworzy się na telefonie z autouzupełnieniem i podpisem mobilnym.',cta:'Wyślij link do aplikacji',nav:'Wyślij do aplikacji',note:'<i class="ti ti-device-mobile"></i>Handoff desktop → aplikacja',smartT:'Przenieś wniosek na telefon',smart:'<div style="display:flex;gap:14px;align-items:center"><div style="width:86px;height:86px;border-radius:8px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);font-size:50px;flex-shrink:0"><i class="ti ti-qrcode"></i></div><div style="flex:1"><div style="font-weight:900;font-size:14px;margin-bottom:5px">Zeskanuj telefonem</div><div style="font-size:12px;color:var(--muted);line-height:1.45">Wniosek otworzy się w aplikacji z już uzupełnionymi danymi. Podpis BLIK-iem w 30 sekund.</div></div></div><div style="display:flex;gap:8px;margin-top:13px"><input class="sm-input" placeholder="Nr telefonu"><button class="btn btn-pri">Wyślij link SMS</button></div>',kpiV:'+47%',kpiL:'Ukończenie wniosku po przeniesieniu desktop → aplikacja',prodSub:'Mobilne dokończenie konwertuje wyżej niż formularz na desktopie.',prods:['pozyczka','konto','karta','oszcz'],badge:'Dokończ w app',app:'Wniosek czeka w aplikacji — z autouzupełnieniem i podpisem mobilnym.'},
+
+{n:'Dowód społeczny na żywo',reco:'<b>Świeży, anonimowy gość</b> · brak historii, strona pożyczki, wysoka niepewność',eyebrow:'Dołącz do innych',title:'Dziś 1 240 osób<br>wzięło pożyczkę online',sub:'Realne, anonimowe statystyki budują zaufanie nowych odwiedzających dokładnie tam, gdzie się wahają.',cta:'Sprawdź swoją ofertę',nav:'Sprawdź ofertę',note:'<i class="ti ti-users"></i>Dowód społeczny na żywo',smartT:'Co dzieje się teraz',smart:'<div class="kv"><span class="k"><i class="ti ti-flame" style="color:var(--velo-d)"></i> Pożyczki online dziś</span><span class="v">1 240</span></div><div class="kv"><span class="k">Średni czas decyzji</span><span class="v">8 minut</span></div><div class="kv"><span class="k">Ocena klientów</span><span class="v">4,8 / 5 · 12 430 opinii</span></div><div style="margin-top:13px;padding:10px 12px;background:var(--velo-50);border-radius:4px;font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:var(--velo);flex-shrink:0"></span> Anna z Krakowa wzięła 25 000 zł · 2 min temu</div>',kpiV:'+21%',kpiL:'Konwersja nowych, niepewnych gości (efekt dowodu społecznego)',prodSub:'Budujemy zaufanie tam, gdzie nowy klient się waha.',prods:['pozyczka','konto','oszcz','karta'],badge:'Popularne',app:'Zobacz w aplikacji, jak Twoja oferta wypada na tle innych.'},
+
+{n:'Proaktywny doradca',reco:'<b>Bardzo wysoka intencja hipoteczna</b> · 6 min na kalkulatorze, 3. wizyta dziś',eyebrow:'Porozmawiajmy',title:'Doradca oddzwoni<br>w 5 minut',sub:'Przy tak wysokiej intencji nie czekamy na formularz — proponujemy rozmowę dokładnie w momencie zainteresowania.',cta:'Zamów rozmowę',nav:'Zamów rozmowę',note:'<i class="ti ti-headset"></i>Gorący lead → doradca',smartT:'Doradca dostępny teraz',smart:'<div style="display:flex;gap:11px;align-items:center;margin-bottom:13px"><div style="width:42px;height:42px;border-radius:50%;background:var(--velo-100);color:var(--velo-d);display:flex;align-items:center;justify-content:center;font-weight:900">AK</div><div><div style="font-weight:900;font-size:14px">Anna Kowalska · doradca hipoteczny</div><div style="font-size:12px;color:var(--velo-d);font-weight:700;margin-top:2px"><span style="width:7px;height:7px;border-radius:50%;background:var(--velo);display:inline-block;margin-right:6px"></span>dostępna teraz</div></div></div><div style="display:flex;gap:8px"><input class="sm-input" placeholder="Twój numer telefonu"><button class="btn btn-pri">Oddzwońcie</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:8px">Średni czas oddzwonienia: 4 min 12 s</div>',kpiV:'+58%',kpiL:'Kontakt z najgorętszymi leadami (intencja w czasie rzeczywistym)',prodSub:'Rozmowa z człowiekiem w szczycie intencji bije każdy formularz.',prods:['hipoteka','konto','oszcz','konsolid'],badge:'Hot lead',app:'Doradca widzi Twój kontekst i może kontynuować w aplikacji.'},
+
+{n:'Personalizowana pilność',reco:'<b>Wahający się powracający gość</b> · 3. wizyta na karcie kredytowej, brak akcji',eyebrow:'Tylko dla Ciebie',title:'Twoja oferta karty<br>ważna jeszcze 09:58',sub:'Ofertę karty rezerwujemy na czas tej sesji. Realna pilność oparta na Twoich powrotach, nie sztuczny banner dla wszystkich.',cta:'Weź ofertę zanim zniknie',nav:'Weź ofertę',note:'<i class="ti ti-clock-bolt"></i>Pilność z zachowania',smartT:'Twoja zarezerwowana oferta',smart:'<div style="text-align:center;padding:4px 0 10px"><div style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.6px">OFERTA ZNIKA ZA</div><div id="cdTimer" style="font-size:36px;font-weight:900;color:var(--velo-d);letter-spacing:1px">09:58</div></div><div class="kv"><span class="k">Karta kredytowa · limit</span><span class="v">do 20 000 zł</span></div><div class="kv"><span class="k">Raty 0% / VeloChwile</span><span class="v" style="color:var(--velo-d)">w cenie</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Złóż wniosek</button>',kpiV:'+26%',kpiL:'Konwersja z prawdziwą, behawioralną pilnością',prodSub:'Pilność oparta na Twoich powrotach, nie na sztucznym timerze.',prods:['karta','oszcz','pozyczka','konto'],badge:'Rezerwacja',app:'Twoja zarezerwowana oferta czeka też w aplikacji VeloBank.'},
+
+{n:'Wykryto logowanie → klient',reco:'<b>Wykryto logowanie → tag „klient"</b> · dyskretnie podmieniamy komunikat na lojalnościowy (bez CRM, bez „wiemy, że jesteś klientem")',eyebrow:'VeloKorzyści',title:'Więcej z każdą<br>transakcją',sub:'Zwroty za zakupy kartą, zniżki u partnerów i wyższe oprocentowanie oszczędności. Odbieraj korzyści, które już na Ciebie czekają.',cta:'Zobacz korzyści',nav:'VeloKorzyści',note:'<i class="ti ti-rosette-discount-check"></i>Bez warunków',smartT:'Co zyskujesz z VeloKorzyści',smart:'<div class="blist"><div class="bp"><i class="ti ti-discount-2"></i><span><b>VeloKorzyści — do 3% zwrotu</b> za zakupy kartą</span></div><div class="bp"><i class="ti ti-tags"></i><span><b>Zniżki u partnerów</b> — Allegro, Media Markt, stacje paliw</span></div><div class="bp"><i class="ti ti-pig-money"></i><span><b>Konto oszczędnościowe 6%</b> — stawka dla klientów</span></div><div class="bp"><i class="ti ti-device-mobile"></i><span><b>Aplikacja + 50 zł</b> za pierwsze logowanie</span></div><div class="bp"><i class="ti ti-users"></i><span><b>Poleć znajomego — 100 zł</b> dla obu stron</span></div></div><button class="btn btn-pri btn-block" style="margin-top:13px">Aktywuj korzyści</button>',kpiV:'+24%',kpiL:'Zaangażowanie i retencja klientów (program lojalnościowy)',prodSub:'Produkty i korzyści dla obecnych klientów.',prods:['oszcz','karta','konto','velofotka'],badge:'Klient',app:'W aplikacji pokażemy korzyści dopasowane do Twoich produktów (pełny CRM).'},
+
+{n:'Tag: klient czy prospekt',reco:'<b>Tag po logowaniu → dwie różne kampanie</b> · klient vs prospekt, w czasie rzeczywistym (bez CRM)',eyebrow:'Wiemy, kto puka',title:'Dwie kampanie,<br>jedna strona',sub:'Klient (zalogowany) i nowy prospekt widzą inną, konkretną kampanię na tym samym ekranie. Tag nadawany po logowaniu — bez sięgania do CRM.',cta:'Zobacz ofertę',nav:'Sprawdź ofertę',note:'<i class="ti ti-tags"></i>Dwie kampanie',smartT:'Kampanie wg tagu',smart:'<div style="display:flex;gap:9px"><div style="flex:1;border:1.5px solid var(--velo);border-radius:8px;padding:11px;background:var(--velo-50)"><span class="tagx">klient</span><div style="font-weight:900;font-size:13px;margin:6px 0 2px;color:var(--velo-d)">Aplikacja + 50 zł</div><div style="font-size:11px;color:var(--muted);line-height:1.35">VeloKorzyści za logowanie w app</div></div><div style="flex:1;border:1px solid var(--line);border-radius:8px;padding:11px"><span class="tagx gray">prospekt</span><div style="font-weight:900;font-size:13px;margin:6px 0 2px">VeloKonto 0 zł + 200 zł</div><div style="font-size:11px;color:var(--muted);line-height:1.35">na start, online w 8 minut</div></div></div><div class="kv" style="margin-top:11px"><span class="k">Trigger</span><span class="v" style="color:var(--velo-d)">tag po logowaniu — bez CRM</span></div>',kpiV:'+29%',kpiL:'Trafność kampanii dzięki tagowaniu klient vs prospekt',prodSub:'Produkty dobrane do statusu: klient czy prospekt.',prods:['konto','karta','velofotka','oszcz'],badge:'Tag',app:'Pełny kontekst klienta (CRM) jest dopiero w aplikacji.'},
+];
+
+const ucRow=document.getElementById('ucRow');
+UC.forEach((u,i)=>{const b=document.createElement('button');b.className='uc'+(i===0?' on':'');b.innerHTML='<span class="nm">'+(i+1)+'</span>'+u.n;b.onclick=()=>sel(i);ucRow.appendChild(b);});
+const $=id=>document.getElementById(id);
+function sel(i){const u=UC[i];
+  [...document.querySelectorAll('.uc')].forEach((b,j)=>b.classList.toggle('on',j===i));
+  $('recoText').innerHTML=u.reco;$('hEyebrow').textContent=u.eyebrow;$('hTitle').innerHTML=u.title;$('hSub').textContent=u.sub;
+  $('hCta').textContent=u.cta;$('hNote').innerHTML=u.note;$('navCta').textContent=u.nav;
+  $('smartTitle').textContent=u.smartT;$('smartBody').innerHTML=u.smart;$('kpiV').textContent=u.kpiV;$('kpiL').textContent=u.kpiL;
+  $('prodSub').textContent=u.prodSub;$('appCopy').textContent=u.app;
+  $('prodsR').innerHTML=u.prods.map((k,idx)=>card(k,idx===0,u.badge)).join('');
+  document.querySelectorAll('.page')[1].scrollTop=0;
+  if(window.__cd){clearInterval(window.__cd);window.__cd=null;}
+  const t=$('cdTimer');
+  if(t){let s=598;window.__cd=setInterval(()=>{s=s>0?s-1:598;t.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},1000);}
+}
+sel(0);
+window.curScn=0;
+document.querySelectorAll('#ucRow .uc').forEach((b,i)=>b.addEventListener('click',()=>{window.curScn=i;}));
+
+/* ===== widoki ===== */
+function showView(v){['web','app','how'].forEach(x=>{document.getElementById('view-'+x).hidden=(x!==v);});document.querySelectorAll('.vtab').forEach(t=>t.classList.toggle('on',t.dataset.v===v));window.scrollTo(0,0);}
+document.querySelectorAll('.vtab').forEach(t=>t.onclick=()=>showView(t.dataset.v));
+document.querySelectorAll('[data-goto]').forEach(b=>b.onclick=()=>showView(b.dataset.goto));
+
+/* ===== zakładki podstron WWW ===== */
+const NAVTABS=['konta','karty','oszcz','kredyty','ubez'];
+const TABNAMES={start:'Start',konta:'Konta osobiste',karty:'Karty',oszcz:'Oszczędności',kredyty:'Kredyty',ubez:'Ubezpieczenia'};
+const START_LEFT={ey:'VeloKonto',title:'Najlepsze rzeczy<br>w życiu są za 0 zł',sub:'0 zł za prowadzenie VeloKonta i kartę — bez żadnych warunków.',cta:'Załóż VeloKonto',note:'<i class="ti ti-clock"></i>Online w 8 minut',prods:['konto','pozyczka','oszcz','karta']};
+const CARDVIZ='<div class="cardviz"><div class="chip"></div><div class="lab">VeloBank · karta kredytowa</div><div class="cn">5412 •••• •••• 8842</div><div style="margin-top:12px"><span class="lab">dostępny limit</span><div class="lim">18 500 zł</div></div></div><button class="btn btn-pri btn-block" style="margin-top:14px">Aktywuj kartę</button>';
+const HIPOSM='<div style="display:flex;align-items:flex-end;gap:14px"><div><div style="font-size:11px;color:var(--muted);font-weight:700">SZACOWANA RATA</div><div class="bigrate">2 140 zł</div></div><div style="font-size:12px;color:var(--muted);padding-bottom:6px;line-height:1.5">kwota 420 000 zł<br>okres 25 lat</div></div><div class="kv" style="margin-top:8px"><span class="k">Wstępna zdolność</span><span class="v" style="color:var(--velo-d)">do 510 000 zł</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Złóż wniosek o hipotekę</button>';
+const WEBSUB={
+  konta:{gen:{ey:'Konta osobiste',title:'VeloKonto<br>0 zł, bez warunków',sub:'Konto, karta i aplikacja bez opłat — dla każdego klienta.',cta:'Załóż VeloKonto',note:'<i class="ti ti-clock"></i>Online w 8 minut',prods:['konto','oszcz','karta','pozyczka']},
+    per:{reco:'<b>Rozpoznano powracającego gościa</b> · przeglądał konta 2× w tym tygodniu',ey:'Witaj ponownie',title:'Konto, które<br>znasz — i lubisz',sub:'Wracasz do nas po raz kolejny — pokazujemy konto, które oglądałeś, i to, co na nim zyskujesz.',cta:'Otwórz konto',note:'<i class="ti ti-history"></i>Na bazie Twoich wizyt',navCta:'Otwórz konto',smartT:'Wracasz do VeloKonta',smart:'<div class="kv"><span class="k">Oglądane</span><span class="v">VeloKonto · 2× w tym tygodniu</span></div><div class="kv"><span class="k">Co zyskujesz</span><span class="v" style="color:var(--velo-d)">0 zł + VeloKorzyści</span></div><div class="kv"><span class="k">Założenie</span><span class="v">8 minut, online</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Otwórz konto</button>',kpiV:'+31%',kpiL:'Konwersja na podstronie Konta po personalizacji',prodSub:'Konta uszeregowane pod Twój profil.',prods:['konto','oszcz','karta','pozyczka'],badge:'Dla Ciebie',app:'Otwórz konto w aplikacji i przenieś wpływy w kilka minut.'}},
+  karty:{gen:{ey:'Karty',title:'Karty do konta<br>i karty kredytowe',sub:'Płatności mobilne, raty 0% i program VeloChwile.',cta:'Wybierz kartę',note:'<i class="ti ti-credit-card"></i>Apple Pay / Google Pay',prods:['karta','konto','pozyczka','oszcz']},
+    per:{reco:'<b>Intencja: karta kredytowa</b> · przegląda karty + porównywarka opłat',ey:'Szukasz karty?',title:'Karta z limitem<br>do 20 000 zł',sub:'Oglądasz karty kredytowe — pokazujemy najlepiej dopasowaną: raty 0%, VeloChwile i decyzja online w 15 minut.',cta:'Wnioskuj o kartę',note:'<i class="ti ti-credit-card"></i>Decyzja online w 15 min',navCta:'Wnioskuj o kartę',smartT:'Karta dopasowana do intencji',smart:'<div class="cardviz"><div class="chip"></div><div class="lab">VeloBank · karta kredytowa</div><div class="cn">Limit do 20 000 zł</div><div style="margin-top:12px"><span class="lab">raty 0% · VeloChwile</span><div class="lim">decyzja w 15 min</div></div></div><button class="btn btn-pri btn-block" style="margin-top:14px">Wnioskuj o kartę</button>',kpiV:'+52%',kpiL:'Konwersja przy intencji „karta kredytowa"',prodSub:'Na pierwszym planie karta zgodna z intencją.',prods:['karta','oszcz','pozyczka','konto'],badge:'Intencja',app:'Wniosek o kartę dokończysz w aplikacji.'}},
+  oszcz:{gen:{ey:'Oszczędności',title:'Lokata na Nowe<br>Środki — do 5,5%',sub:'Konta oszczędnościowe i lokaty z atrakcyjnym oprocentowaniem.',cta:'Zacznij oszczędzać',note:'<i class="ti ti-pig-money"></i>Zysk codziennie',prods:['oszcz','konto','karta','pozyczka']},
+    per:{reco:'<b>Intencja: oszczędzanie</b> · porównuje konta oszczędnościowe i lokaty',ey:'Niech pieniądze pracują',title:'Lokata na Nowe<br>Środki — do 5,5%',sub:'Porównujesz oprocentowanie — pokazujemy najlepszą opcję: do 5,5% bez zamrażania środków.',cta:'Załóż lokatę',note:'<i class="ti ti-coin"></i>Pełna dostępność',navCta:'Załóż lokatę',smartT:'Ile możesz zyskać',smart:'<div class="kv"><span class="k">Przykład: 20 000 zł</span><span class="v">na 5,5%</span></div><div class="kv"><span class="k">Zysk w 12 mc</span><span class="v" style="color:var(--velo-d)">+ 1 100 zł</span></div><div class="kv"><span class="k">Dostępność</span><span class="v">środki w każdej chwili</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Załóż lokatę</button>',kpiV:'+28%',kpiL:'Konwersja przy intencji oszczędzania',prodSub:'Oferty oszczędnościowe dla porównującego.',prods:['oszcz','konto','karta','pozyczka'],badge:'Intencja',app:'Załóż lokatę w aplikacji w 3 minuty.'}},
+  kredyty:{gen:{ey:'Kredyty',title:'Pożyczka i kredyty<br>z decyzją online',sub:'Gotówkowy, konsolidacyjny, hipoteczny i Wymarzone Auto.',cta:'Sprawdź ofertę',note:'<i class="ti ti-cash"></i>100% online',prods:['pozyczka','konsolid','hipoteka','auto']},
+    per:{reco:'<b>Intencja: kredyt hipoteczny</b> · 3× kalkulator rat w ostatnich 7 dniach',ey:'Twój dom, Twoje miejsce',title:'Hipoteka<br>RRSO 6,57%',sub:'Na podstawie Twoich kalkulacji rata od 2 140 zł. Sprawdź zdolność bez wpływu na BIK.',cta:'Sprawdź zdolność',note:'<i class="ti ti-shield-check"></i>Bez wpływu na BIK',navCta:'Sprawdź zdolność',smartT:'Twoja symulacja hipoteki',smart:HIPOSM,kpiV:'+41%',kpiL:'Leady hipoteczne na podstronie Kredyty',prodSub:'Na pierwszym planie produkt zgodny z intencją.',prods:['hipoteka','pozyczka','konsolid','auto'],badge:'Intencja',app:'Złóż wniosek o hipotekę i śledź status w aplikacji.'}},
+  ubez:{gen:{ey:'Ubezpieczenia',title:'Ochrona życia,<br>domu i podróży',sub:'Ubezpieczenia na życie, dom, podróż i do kredytu.',cta:'Sprawdź ochronę',note:'<i class="ti ti-shield"></i>Wycena w 2 min',prods:['konto','hipoteka','karta','oszcz']},
+    per:{reco:'<b>Kontekst: kredyt hipoteczny</b> · liczył hipotekę, teraz przegląda ubezpieczenia',ey:'Bierzesz hipotekę?',title:'Ochrona życia<br>do kredytu',sub:'Planujesz kredyt — pokazujemy ubezpieczenie, które często bywa jego warunkiem. Wycena w 2 minuty, bez zobowiązań.',cta:'Sprawdź ochronę',note:'<i class="ti ti-heart"></i>Wycena w 2 min',navCta:'Sprawdź ochronę',smartT:'Przykładowa ochrona',smart:'<div class="kv"><span class="k">Dla kredytu (z kalkulatora)</span><span class="v">420 000 zł</span></div><div class="kv"><span class="k">Sugerowana ochrona</span><span class="v" style="color:var(--velo-d)">do 420 000 zł</span></div><div class="kv"><span class="k">Składka</span><span class="v">od 49 zł / mc</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Sprawdź ochronę</button>',kpiV:'+34%',kpiL:'Cross-sell ubezpieczenia do intencji hipotecznej',prodSub:'Ochrona powiązana z intencją kredytową.',prods:['hipoteka','konto','oszcz','karta'],badge:'Do kredytu',app:'Dokup ochronę w aplikacji w 2 minuty.'}}
+};
+function setLeft(g){$('hLey').textContent=g.ey;$('hLtitle').innerHTML=g.title;$('hLsub').textContent=g.sub;$('hLcta').textContent=g.cta;$('hLnote').innerHTML=g.note;$('prodsL').innerHTML=g.prods.map(k=>card(k,false)).join('');}
+function applyRight(p){if(window.__cd){clearInterval(window.__cd);window.__cd=null;}$('recoText').innerHTML=p.reco;$('hEyebrow').textContent=p.ey;$('hTitle').innerHTML=p.title;$('hSub').textContent=p.sub;$('hCta').textContent=p.cta;$('hNote').innerHTML=p.note;$('navCta').textContent=p.navCta;$('smartTitle').textContent=p.smartT;$('smartBody').innerHTML=p.smart;$('kpiV').textContent=p.kpiV;$('kpiL').textContent=p.kpiL;$('prodSub').textContent=p.prodSub;$('appCopy').textContent=p.app;$('prodsR').innerHTML=p.prods.map((k,idx)=>card(k,idx===0,p.badge)).join('');}
+function navHi(tab){document.querySelectorAll('.vb-menu').forEach(m=>[...m.children].forEach((li,idx)=>li.classList.toggle('act',NAVTABS[idx]===tab)));}
+function webTab(tab){navHi(tab);
+  if(tab==='start'){setLeft(START_LEFT);$('ucRow').style.display='';$('subNote').classList.remove('on');sel(window.curScn||0);}
+  else{const s=WEBSUB[tab];setLeft(s.gen);applyRight(s.per);$('ucRow').style.display='none';$('subNote').classList.add('on');$('subNote').innerHTML='<i class="ti ti-layout-navbar"></i> Personalizacja na podstronie: '+TABNAMES[tab];}
+  document.querySelectorAll('#view-web .page').forEach(p=>p.scrollTop=0);
+}
+document.querySelectorAll('.vb-menu').forEach(m=>[...m.children].forEach((li,idx)=>{li.style.cursor='pointer';li.onclick=()=>webTab(NAVTABS[idx]);}));
+document.querySelectorAll('.vb-logo').forEach(l=>{l.style.cursor='pointer';l.onclick=()=>webTab('start');});
+
+/* ===== aplikacja mobilna ===== */
+const ADB={konto:'0 zł za prowadzenie',pozyczka:'RRSO 8,4% · online',konsolid:'RRSO 8,1%',hipoteka:'RRSO 6,57%',auto:'RRSO 14,7%',oszcz:'Lokata do 5,5%',velofotka:'RRSO 0%',karta:'do 20 tys. · raty 0%'};
+function atile(key,flag,badge){return `<div class="atile ${flag?'flag':''}">${flag?'<span class="abadge">'+badge+'</span>':''}<div class="ai" style="background-image:url('${PROD[key].img}')"></div><div><div class="an">${PROD[key].h}</div><div class="ad">${ADB[key]}</div></div><i class="ti ti-chevron-right ag"></i></div>`;}
+document.getElementById('appTilesL').innerHTML=['konto','pozyczka','oszcz'].map(k=>atile(k,false)).join('');
+const APP=[
+{n:'Powitanie + dokończ wniosek',reco:'Rozpoznano: wniosek o pożyczkę w toku (3/5)',inappT:'Dokończ swój wniosek',inapp:'<div style="font-weight:900;font-size:14px;margin-bottom:6px">Witaj ponownie, Arku</div><div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">Twój wniosek o pożyczkę 30 000 zł czeka — zostały 2 kroki.</div><div class="prog"><i style="width:60%"></i></div><button class="btn btn-pri btn-block" style="margin-top:10px">Dokończ wniosek</button>',tiles:['pozyczka','konto','oszcz'],badge:'W toku',kpiV:'+34%',kpiL:'Dokończenia wniosków w aplikacji'},
+{n:'Pre-approved karta',reco:'Profil: brak karty kredytowej, regularne wpływy',inappT:'Twój wstępny limit',inapp:'<div class="cardviz"><div class="chip"></div><div class="lab">VeloBank · karta</div><div class="cn">5412 •••• •••• 8842</div><div style="margin-top:10px"><span class="lab">dostępny limit</span><div class="lim">18 500 zł</div></div></div><button class="btn btn-pri btn-block" style="margin-top:10px">Aktywuj kartę</button>',tiles:['karta','oszcz','pozyczka'],badge:'Polecane',kpiV:'+52%',kpiL:'Cross-sell karty w aplikacji'},
+{n:'Wznowienie wniosku',reco:'Porzucony wniosek hipoteczny · krok 2/4',inappT:'Wróć do wniosku o hipotekę',inapp:'<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Twoja symulacja: rata 2 140 zł (420 000 zł / 25 lat).</div><div class="prog"><i style="width:50%"></i></div><button class="btn btn-pri btn-block" style="margin-top:10px">Wznów wniosek</button>',tiles:['hipoteka','konto','oszcz'],badge:'W toku',kpiV:'+27%',kpiL:'Odzysk porzuconych wniosków w aplikacji'},
+{n:'Cross-sell z transakcji',reco:'Wykryto 4 subskrypcje miesięczne (312 zł)',inappT:'Rozłóż wydatki na raty 0%',inapp:'<div class="kv"><span class="k">Subskrypcje / mc</span><span class="v">312 zł</span></div><div class="kv"><span class="k">Propozycja</span><span class="v" style="color:var(--velo-d)">raty 0% VeloChwile</span></div><button class="btn btn-pri btn-block" style="margin-top:12px">Włącz raty 0%</button>',tiles:['karta','konto','oszcz'],badge:'Z transakcji',kpiV:'+33%',kpiL:'Aktywacja rat 0% z analizy transakcji'},
+{n:'Nudge oszczędnościowy',reco:'Nadwyżka na koncie +2 300 zł vs średnia',inappT:'Twoje pieniądze mogą pracować',inapp:'<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Masz więcej niż zwykle. Odłóż 2 000 zł na 5,5% — bez zamrażania.</div><div class="kv"><span class="k">Zysk w 12 mc</span><span class="v" style="color:var(--velo-d)">+ 110 zł</span></div><button class="btn btn-pri btn-block" style="margin-top:12px">Odłóż 2 000 zł</button>',tiles:['oszcz','konto','karta'],badge:'Nadwyżka',kpiV:'+29%',kpiL:'Założenia oszczędności z nudge'},
+{n:'Oferta lokalna (geo)',reco:'Lokalizacja: Kraków · placówka 1,2 km',inappT:'Doradca w Twojej okolicy',inapp:'<div class="maprow"><div class="mapbox"><div class="ln" style="left:0;right:0;top:24px;height:3px"></div><div class="ln" style="top:0;bottom:0;left:42px;width:3px"></div><i class="ti ti-map-pin-filled pin"></i></div><div><div style="font-weight:900;font-size:13px">Kraków-Rynek, Floriańska 12</div><div style="font-size:11.5px;color:var(--muted)">1,2 km · wolne dziś do 18:00</div></div></div><button class="btn btn-pri btn-block" style="margin-top:12px">Umów wizytę</button>',tiles:['konto','hipoteka','karta'],badge:'W okolicy',kpiV:'+23%',kpiL:'Wizyty w placówce z aplikacji'},
+{n:'Intencja: hipoteka',reco:'3× kalkulator hipoteki w aplikacji',inappT:'Twoja symulacja hipoteki',inapp:'<div style="text-align:center;padding:2px 0 8px"><div style="font-size:11px;color:var(--muted);font-weight:700">SZACOWANA RATA</div><div class="bigrate">2 140 zł</div></div><button class="btn btn-pri btn-block">Sprawdź zdolność</button>',tiles:['hipoteka','oszcz','konto'],badge:'Intencja',kpiV:'+41%',kpiL:'Leady hipoteczne w aplikacji'},
+{n:'VeloKorzyści — cashback',reco:'Transakcja w kategorii partnerskiej',inappT:'Twój zwrot czeka',push:'<div class="push"><div class="pic"><i class="ti ti-gift"></i></div><div><div class="ptt">Zwrot 24 zł za zakupy</div><div class="pms">Media Markt · odebrane do VeloKorzyści</div></div><span class="pnow">teraz</span></div>',inapp:'<div class="kv"><span class="k">VeloKorzyści w tym mc</span><span class="v" style="color:var(--velo-d)">142 zł</span></div><div class="kv"><span class="k">Do odebrania</span><span class="v">24 zł</span></div><button class="btn btn-pri btn-block" style="margin-top:12px">Odbierz zwrot</button>',tiles:['karta','konto','oszcz'],badge:'Cashback',kpiV:'+21%',kpiL:'Zaangażowanie przez VeloKorzyści'},
+{n:'Asystent AI',reco:'Pytanie w wyszukiwarce aplikacji',inappT:'Asystent VeloBank',inapp:'<div style="background:var(--velo-50);border-radius:10px;padding:10px 12px;font-size:12.5px;margin-bottom:8px"><b>Ty:</b> Na co wydaję najwięcej?</div><div style="background:#fff;border:1px solid var(--velo-100);border-radius:10px;padding:10px 12px;font-size:12.5px"><b style="color:var(--velo-d)">Asystent:</b> Subskrypcje — 312 zł/mc. Chcesz rozłożyć je na raty 0%?</div><button class="btn btn-pri btn-block" style="margin-top:10px">Pokaż szczegóły</button>',tiles:['karta','oszcz','konto'],badge:'Asystent AI',kpiV:'+37%',kpiL:'Zaangażowanie z asystentem AI'},
+{n:'Reaktywacja (retencja)',reco:'Spadek aktywności · 30 dni bez logowania',inappT:'Dawno Cię nie było',inapp:'<div style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Wróć po więcej — Twoje VeloKorzyści czekają do odebrania.</div><div class="kv"><span class="k">Do odebrania</span><span class="v" style="color:var(--velo-d)">142 zł</span></div><button class="btn btn-pri btn-block" style="margin-top:12px">Odbierz korzyści</button>',tiles:['konto','karta','oszcz'],badge:'Powrót',kpiV:'−17%',kpiL:'Reaktywacja i redukcja churnu w aplikacji'}
+];
+const appRow=document.getElementById('appRow');
+APP.forEach((u,i)=>{const b=document.createElement('button');b.className='uc'+(i===0?' on':'');b.innerHTML='<span class="nm">'+(i+1)+'</span>'+u.n;b.onclick=()=>selApp(i);appRow.appendChild(b);});
+function selApp(i){const u=APP[i];[...appRow.children].forEach((b,j)=>b.classList.toggle('on',j===i));
+  $('appReco').innerHTML=u.reco;$('appInappT').textContent=u.inappT;$('appInappB').innerHTML=u.inapp;$('appPush').innerHTML=u.push||'';
+  $('appTilesR').innerHTML=u.tiles.map((k,idx)=>atile(k,idx===0,u.badge)).join('');$('appKpiV').textContent=u.kpiV;$('appKpiL').textContent=u.kpiL;
+  document.querySelectorAll('#view-app .screen').forEach(s=>s.scrollTop=0);}
+selApp(0);
+
+/* ===== interaktywne moduły WWW — wpięte w stronę, live personalizacja ===== */
+const plPLN=n=>Math.round(n).toLocaleString('pl-PL').replace(/,/g,' ');
+const rataOf=(k,n)=>{const r=0.084/12;return k*r/(1-Math.pow(1+r,-n));};
+let lastCalc={k:50000,n:60,rata:Math.round(rataOf(50000,60))};
+
+function calcDisp(amtId,perId,avId,pvId,rvId,noteId){const k=+$(amtId).value,n=+$(perId).value,rata=Math.round(rataOf(k,n));
+  $(avId).textContent=plPLN(k)+' zł';$(pvId).textContent=n+' mies.';$(rvId).textContent=plPLN(rata)+' zł';
+  if(noteId){const approved=Math.min(150000,Math.round(k*1.4/1000)*1000);$(noteId).textContent='Persooa: wstępnie zatwierdzamy do '+plPLN(approved)+' zł — bez dodatkowych dokumentów.';}
+  return {k,n,rata};}
+
+/* lewy — tylko liczy */
+function runL(){calcDisp('calcAmtL','calcPerL','calcAmtVL','calcPerVL','calcRataL',null);}
+$('calcAmtL').addEventListener('input',runL);$('calcPerL').addEventListener('input',runL);runL();
+
+/* prawy — liczy i personalizuje całą stronę na żywo */
+function runR(personalize){const r=calcDisp('calcAmt','calcPer','calcAmtV','calcPerV','calcRata','calcNote');lastCalc=r;if(personalize)personalizeCalc(r.k,r.n,r.rata);}
+$('calcAmt').addEventListener('input',()=>runR(true));$('calcPer').addEventListener('input',()=>runR(true));runR(false);
+
+function personalizeCalc(k,n,rata){
+  [...document.querySelectorAll('#ucRow .uc')].forEach((b,j)=>b.classList.toggle('on',j===8));window.curScn=8;
+  $('recoText').innerHTML='<b>Wykryto kalkulację na żywo</b> · pożyczka '+plPLN(k)+' zł, '+n+' mies.';
+  $('hEyebrow').textContent='Twoja symulacja';$('hTitle').innerHTML='Pożyczka '+plPLN(k)+' zł<br>rata '+plPLN(rata)+' zł/mc';
+  $('hSub').textContent='Dokładnie taką pożyczkę właśnie liczysz. Mamy gotową, wstępnie zatwierdzoną ofertę — bez wypełniania od nowa.';
+  $('hCta').textContent='Weź tę pożyczkę';$('hNote').innerHTML='<i class="ti ti-check"></i>Wstępna zgoda';$('navCta').textContent='Weź pożyczkę';
+  $('smartTitle').textContent='Twoja gotowa oferta';
+  $('smartBody').innerHTML='<div class="kv"><span class="k">Kwota</span><span class="v">'+plPLN(k)+' zł</span></div><div class="kv"><span class="k">Rata miesięczna</span><span class="v" style="color:var(--velo-d);font-size:15px">'+plPLN(rata)+' zł</span></div><div class="kv"><span class="k">Okres / RRSO</span><span class="v">'+n+' mies. · 8,4%</span></div><div class="kv"><span class="k">Status</span><span class="v" style="color:var(--velo-d)">wstępnie zatwierdzona</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Akceptuję ofertę</button>';
+  $('kpiV').textContent='+36%';$('kpiL').textContent='Przejście z kalkulatora do złożonego wniosku';
+  $('prodSub').textContent='Kontynuacja dokładnie tej kalkulacji, którą wykonujesz.';
+  $('prodsR').innerHTML=['pozyczka','konsolid','konto','karta'].map((kk,idx)=>card(kk,idx===0,'Twoja symulacja')).join('');}
+
+/* symulacja powrotu — scenariusz dla powracających z kontekstem kalkulatora */
+$('calcReturn').addEventListener('click',()=>{const k=lastCalc.k,n=lastCalc.n,rata=lastCalc.rata;
+  [...document.querySelectorAll('#ucRow .uc')].forEach(b=>b.classList.remove('on'));
+  $('recoText').innerHTML='<b>Powracający gość</b> · ostatnio liczył pożyczkę '+plPLN(k)+' zł — wracamy do tego';
+  $('hEyebrow').textContent='Witaj ponownie';$('hTitle').innerHTML='Dokończ pożyczkę<br>'+plPLN(k)+' zł';
+  $('hSub').textContent='Pamiętamy Twoją ostatnią symulację. Wracasz — od razu pokazujemy Twoją kwotę i ratę, bez liczenia od nowa.';
+  $('hCta').textContent='Wróć do wniosku';$('hNote').innerHTML='<i class="ti ti-history"></i>Rata '+plPLN(rata)+' zł/mc';$('navCta').textContent='Wróć do wniosku';
+  $('smartTitle').textContent='Twój skrót — kontynuuj';
+  $('smartBody').innerHTML='<div class="kv"><span class="k">Ostatnia symulacja</span><span class="v">'+plPLN(k)+' zł · '+n+' mies.</span></div><div class="kv"><span class="k">Rata</span><span class="v" style="color:var(--velo-d)">'+plPLN(rata)+' zł/mc</span></div><button class="btn btn-pri btn-block" style="margin-top:14px">Dokończ wniosek</button>';
+  $('kpiV').textContent='+34%';$('kpiL').textContent='Konwersja powracających gości (kontekst z kalkulatora)';
+  $('prodSub').textContent='Skrót do tego, co zacząłeś.';$('prodsR').innerHTML=['pozyczka','konsolid','konto','karta'].map((kk,idx)=>card(kk,idx===0,'Dla Ciebie')).join('');
+  document.querySelectorAll('#view-web .page')[1].scrollTop=0;});
+
+/* ===== mini-ankieta (progressive profiling) ===== */
+const SURVEY={Mieszkanie:{prod:'hipoteka',t:'Kredyt hipoteczny',d:'RRSO 6,57% · rata od 2 140 zł',ic:'ti-home',ey:'Twój dom, Twoje miejsce',title:'Kredyt hipoteczny<br>RRSO 6,57%'},Remont:{prod:'pozyczka',t:'Pożyczka na remont',d:'RRSO 8,4% · pierwsze 3 raty 0%',ic:'ti-home-cog',ey:'Odśwież swoje wnętrze',title:'Pożyczka na remont<br>RRSO 8,4%'},Auto:{prod:'auto',t:'Kredyt Wymarzone Auto',d:'RRSO 14,7% · wkład od 0%',ic:'ti-car',ey:'Twoje wymarzone auto',title:'Kredyt na auto<br>RRSO 14,7%'},Konsolidacja:{prod:'konsolid',t:'Kredyt konsolidacyjny',d:'Połącz raty · RRSO 8,1%',ic:'ti-arrows-join-2',ey:'Jedna, niższa rata',title:'Konsolidacja<br>RRSO 8,1%'},'Coś innego':{prod:'pozyczka',t:'Pożyczka gotówkowa',d:'Elastyczna kwota i okres',ic:'ti-cash',ey:'Na dowolny cel',title:'Pożyczka gotówkowa<br>100% online'}};
+function offerHTML(s){return '<div class="sc-offer"><div class="oi"><i class="ti '+s.ic+'"></i></div><div><div class="ot">'+s.t+'</div><div class="od">'+s.d+'</div></div></div>';}
+function buildSurvey(wrapId,resId,isRight){const w=document.getElementById(wrapId),keys=Object.keys(SURVEY);
+  keys.forEach((k,i)=>{const b=document.createElement('button');b.className='sc-chip'+(i===0?' on':'');b.textContent=k;b.onclick=()=>{[...w.children].forEach(c=>c.classList.toggle('on',c===b));renderSurvey(k,resId,isRight,true);};w.appendChild(b);});
+  renderSurvey(keys[0],resId,isRight,false);}
+function renderSurvey(k,resId,isRight,clicked){const s=SURVEY[k];
+  $(resId).innerHTML=offerHTML(s)+(isRight?'<div class="sc-note"><i class="ti ti-sparkles"></i><span>Persooa: zapamiętujemy cel („'+k+'") i przestawiamy ofertę powyżej — bez pytania drugi raz.</span></div>':'<div class="sc-note" style="color:var(--muted)"><i class="ti ti-info-circle"></i><span>Bez aktywacji odpowiedź nie zmienia reszty strony.</span></div>');
+  if(isRight&&clicked)personalizeSurvey(k,s);}
+function personalizeSurvey(k,s){
+  [...document.querySelectorAll('#ucRow .uc')].forEach(b=>b.classList.remove('on'));
+  $('recoText').innerHTML='<b>Cel z mini-ankiety: '+k+'</b> · personalizujemy ofertę na żywo';
+  $('hEyebrow').textContent=s.ey;$('hTitle').innerHTML=s.title;
+  $('hSub').textContent='Wskazałeś cel: '+k.toLowerCase()+'. Pokazujemy dopasowaną ofertę i produkty od razu — bez kolejnych pytań.';
+  $('hCta').textContent='Sprawdź ofertę';$('hNote').innerHTML='<i class="ti ti-clipboard-check"></i>Dopasowane do celu';$('navCta').textContent='Sprawdź ofertę';
+  $('smartTitle').textContent='Oferta dla celu: '+k;
+  $('smartBody').innerHTML=offerHTML(s).replace('class="sc-offer"','class="sc-offer" style="margin:0;background:var(--velo-50)"')+'<button class="btn btn-pri btn-block" style="margin-top:12px">Złóż wniosek</button>';
+  $('kpiV').textContent='+44%';$('kpiL').textContent='Progressive profiling: cel z ankiety → konwersja';
+  $('prodSub').textContent='Produkty dobrane do wskazanego celu.';
+  $('prodsR').innerHTML=[s.prod,'konto','oszcz','karta'].map((kk,idx)=>card(kk,idx===0,'Twój cel')).join('');}
+buildSurvey('surveyChipsL','surveyResL',false);
+buildSurvey('surveyChips','surveyRes',true);
+</script>
+</body>
+</html>
